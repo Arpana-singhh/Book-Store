@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { assets } from '../assets/assets';
 
 const NavBar = () => {
   const [activeLink, setActiveLink] = useState('/');
@@ -9,16 +10,16 @@ const NavBar = () => {
   };
 
   return (
-    <div className="px-[60px] py-[20px] z-[2] sticky w-full top-0 bg-white">
+    <div className="px-[60px] py-[15px] z-[2] sticky w-full top-0 bg-white">
       <div className="flex justify-between items-center">
-        <Link to="/" className="text-3xl color-[232323] font-[700]">
-          <span>Logo</span>
+        <Link to="/" className="h-[55px] w-[55px]">
+          <img src={assets.Logo} alt="Leaf&Ink"/>
         </Link>
 
         <div className="flex items-center gap-[10px]">
           <Link
             to="/"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition-colors duration-300  hover:text-[#ED553B]
+            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
             ${activeLink === '/' ? 'text-[#ED553B]' : ''}`}
             onClick={() => handleLinkClick('/')}
           >
@@ -27,7 +28,7 @@ const NavBar = () => {
 
           <Link
             to="/about"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition-colors duration-300  hover:text-[#ED553B]
+            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
             ${activeLink === '/about' ? 'text-[#ED553B]' : ''}`}
             onClick={() => handleLinkClick('/about')}
           >
@@ -36,7 +37,7 @@ const NavBar = () => {
 
           <Link
             to="/books"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition-colors duration-300 hover:text-[#ED553B] 
+            className={`text-[18px] font-[700] text-[#232323] px-[20px]transition duration-300 ease-in-out hover:text-[#ED553B] 
             ${activeLink === '/books' ? 'text-[#ED553B]' : ''}`}
             onClick={() => handleLinkClick('/books')}
           >
@@ -45,7 +46,7 @@ const NavBar = () => {
 
           <Link
             to="/cart"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition-colors duration-300 hover:text-[#ED553B] 
+            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
             ${activeLink === '/cart' ? 'text-[#ED553B]' : ''}`}
             onClick={() => handleLinkClick('/cart')}
           >
@@ -54,7 +55,7 @@ const NavBar = () => {
 
           <Link
             to="/login"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition-colors duration-300 hover:text-[#ED553B]
+            className={`text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]
             ${activeLink === '/login' ? 'text-[#ED553B]' : ''}`}
             onClick={() => handleLinkClick('/login')}
           >

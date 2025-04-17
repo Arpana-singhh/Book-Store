@@ -8,6 +8,11 @@ import Rel2 from './images/rel2.svg'
 import Rel3 from './images/rel3.svg'
 import Rel4 from './images/rel4.svg'
 import Rel5 from './images/rel5.svg'
+import Logo from './images/Logo.svg'
+import Facebook from './images/facebook.svg'
+import Twitter from './images/twitter.svg'
+import Youtube from './images/youtube.svg'
+import Linkend from './images/linkend.svg'
 
 
 export const assets = {
@@ -20,5 +25,10 @@ export const assets = {
     Rel2,
     Rel3,
     Rel4,
-    Rel5
+    Rel5,
+    Logo,
+    Facebook,
+    Twitter,
+    Youtube,
+    Linkend
 }

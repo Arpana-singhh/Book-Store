@@ -9,29 +9,29 @@ const Category = () => {
         <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">Categories</h4>
         <h1 className="font-[700] text-[32px] text-[#393280] mb-10">Explore our Top Categories</h1>
         <div className="flex flex-wrap gap-[35px]">
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))]">
-                <img src={assets.Cat1} alt="" className="h-[100%]"/>
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Higher Education</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%]">
+                <img src={assets.Cat1} alt="" className="w-[100%]"/>
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Higher Education</span>
             </Link>
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] ">
-                <img src={assets.Cat2} alt="" className="h-[100%]" />
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Management</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%] ">
+                <img src={assets.Cat2} alt="" className="w-[100%]" />
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Management</span>
             </Link>
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))]">
-                <img src={assets.Cat3} alt="" className="h-[100%]"/>
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Engineering</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%]">
+                <img src={assets.Cat3} alt="" className="w-[100%]"/>
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Engineering</span>
             </Link>
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))]">
-                <img src={assets.Cat2} alt="" className="h-[100%]"/>
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Finance</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%]">
+                <img src={assets.Cat2} alt="" className="w-[100%]"/>
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Finance</span>
             </Link>
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))]">
-                <img src={assets.Cat3} alt="" className="h-[100%]"/>
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Travelling</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%]">
+                <img src={assets.Cat3} alt="" className="w-[100%]"/>
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Travelling</span>
             </Link>
-            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))]">
-                <img src={assets.Cat1} alt="" className="h-[100%]"/>
-                <span className="font-[600] text-[24px] text-[#393280] text-center block">Novel</span>
+            <Link to='/books' className="w-[calc(100%/3-((2*35px)/3))] h-[100%]">
+                <img src={assets.Cat1} alt="" className="w-[100%]"/>
+                <span className="font-[600] text-[24px] text-[#393280] text-center block mt-3">Novel</span>
             </Link>
         </div>
         <div className="flex justify-center items-center">
