@@ -47,7 +47,7 @@ const renderStars = (rating) => {
 
 const NewRelease = () => {
   return (
-    <div className="py-[92px] px-[60px]">
+    <div className="pt-[0] pb-[92px] px-[60px]">
       <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">New Release</h4>
       <h1 className="font-[700] text-[32px] text-[#393280] mb-10">Explore our New Release</h1>
       <div className="flex flex-wrap gap-[34px]">
