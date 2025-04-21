@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <>
-    {/* Hero Section */}
+      {/* Hero Section */}
       <div className="w-full py-8 bg-custom-gradient overflow-hidden">
         <div>
           <Slider {...settings} className="hero-slider">
@@ -79,8 +79,8 @@ const Home = () => {
       </div>
 
       {/* Category Section */}
-      <Category/>
-      <NewRelease/>
+      <Category />
+      <NewRelease />
     </>
   );
 };

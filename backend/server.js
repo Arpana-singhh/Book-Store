@@ -1,11 +1,16 @@
 import express from "express";
 import 'dotenv/config'
+import cors from 'cors';
 import connectDB from "./config/mongodb.js";
 import authRouter from './routes/authRoutes.js'
 import transporter from './config/nodemailer.js'
+
 const app=express();
 const port=process.env.PORT || 4000
 connectDB();
+
+const allowedOrigins =['http://localhost:5173']
+app.use(cors({allowedOrigins}))
 app.use(express.json())
 app.use('/api/auth', authRouter)
 

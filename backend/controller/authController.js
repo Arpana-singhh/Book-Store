@@ -1,7 +1,7 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
-import transporter from '../config/nodemailer.js';
+import jwt from "jsonwebtoken";
+import transporter from "../config/nodemailer.js";
 
 // ====================== REGISTER ======================
 export const register = async (req, res) => {
@@ -76,7 +76,7 @@ export const register = async (req, res) => {
     const mailOptions = {
       from: `Book & Nerd <${process.env.SENDER_EMAIL}>`,
       to: user.email,
-      subject: 'Account Verification OTP',
+      subject: "Account Verification OTP",
       text: `Your OTP is ${otp}. Verify your account using this OTP`,
     };
 
@@ -86,12 +86,12 @@ export const register = async (req, res) => {
       success: true,
       message: "Registered successfully. Please check your email for OTP",
     });
-
   } catch (error) {
     console.error("Registration Error:", error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again.",
+      id: user._id,
     });
   }
 };
@@ -118,30 +118,36 @@ export const login = async (req, res) => {
 
     // Check if email is verified
     if (!user.isAccountVerified) {
-      return res.status(403).json({ success: false, message: "Please verify your email before logging in" });
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "Please verify your email before logging in",
+        });
     }
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Invalid Password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid Password" });
     }
 
     // Prepare token
-    const authClaims = [
-      { name: user.username },
-      { role: user.role },
-    ];
+    const authClaims = [{ name: user.username }, { role: user.role }];
 
-    const token = jwt.sign({ authClaims }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ authClaims }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     return res.status(200).json({
       success: true,
+      message: "User LoggedIn successfully",
       id: user._id,
       role: user.role,
-      token: token
+      token: token,
     });
-
   } catch (error) {
     console.error("Login Error", error);
     return res.status(500).json({
@@ -159,11 +165,12 @@ export const getUserData = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ success: false, message: 'User not Found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not Found" });
     }
 
     return res.status(200).json({ success: true, user });
-
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -183,27 +190,33 @@ export const verifyEmail = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ success: false, message: 'User Not Found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "User Not Found" });
     }
 
     // Validate OTP
-    if (user.verifyOtp === '' || user.verifyOtp !== otp) {
-      return res.status(401).json({ success: false, message: 'Invalid OTP' });
+    if (user.verifyOtp === "" || user.verifyOtp !== otp) {
+      return res.status(401).json({ success: false, message: "Invalid OTP" });
     }
 
     // Check OTP Expiry
     if (user.verifyOtpExpireAt < Date.now()) {
-      return res.status(410).json({ success: false, message: 'OTP Expired' });
+      return res.status(410).json({ success: false, message: "OTP Expired" });
     }
 
     // Update verification status
     user.isAccountVerified = true;
-    user.verifyOtp = '';
+    user.verifyOtp = "";
     user.verifyOtpExpireAt = 0;
 
     await user.save();
-    return res.status(200).json({ success: true, message: 'Email verified successfully' });
-
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Email verified successfully. Please Login!!",
+      });
   } catch (error) {
     console.error("Email Verification Error", error);
     return res.status(500).json({
@@ -228,7 +241,9 @@ export const sentResetOtp = async (req, res) => {
 
   // Email check
   if (!email) {
-    return res.status(400).json({ success: false, message: 'Email is Required' });
+    return res
+      .status(400)
+      .json({ success: false, message: "Email is Required" });
   }
 
   try {
@@ -236,7 +251,9 @@ export const sentResetOtp = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ success: false, message: "User Not Found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User Not Found" });
     }
 
     // Generate OTP and save
@@ -251,13 +268,14 @@ export const sentResetOtp = async (req, res) => {
     const mailOptions = {
       from: `Book & Nerd <${process.env.SENDER_EMAIL}>`,
       to: user.email,
-      subject: 'Password Reset OTP',
+      subject: "Password Reset OTP",
       text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
     };
 
     await transporter.sendMail(mailOptions);
-    return res.status(200).json({ success: true, message: 'OTP sent to your mail' });
-
+    return res
+      .status(200)
+      .json({ success: true, message: "OTP sent to your mail" });
   } catch (error) {
     console.error("EMAIL ERROR:", error);
     return res.status(500).json({ success: false, message: error.message });
@@ -270,7 +288,9 @@ export const verifyOtp = async (req, res) => {
 
   // Field check
   if (!email || !otp) {
-    return res.status(400).json({ success: false, message: 'Email and OTP are required' });
+    return res
+      .status(400)
+      .json({ success: false, message: "Email and OTP are required" });
   }
 
   try {
@@ -278,21 +298,22 @@ export const verifyOtp = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ success: false, message: 'User not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // OTP validation
     if (user.resetOtp !== otp) {
-      return res.status(401).json({ success: false, message: 'Invalid OTP' });
+      return res.status(401).json({ success: false, message: "Invalid OTP" });
     }
 
     // Check Reset OTP Expiry
     if (user.resetOtpExpireAt < Date.now()) {
-      return res.status(410).json({ success: false, message: 'OTP Expired' });
+      return res.status(410).json({ success: false, message: "OTP Expired" });
     }
 
-    return res.status(200).json({ success: true, message: 'OTP Verified' });
-
+    return res.status(200).json({ success: true, message: "OTP Verified" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -304,7 +325,12 @@ export const resetPassword = async (req, res) => {
 
   // Field check
   if (!email || !otp || !newPassword) {
-    return res.status(400).json({ success: false, message: 'Email, OTP, and New Password are required' });
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Email, OTP, and New Password are required",
+      });
   }
 
   try {
@@ -312,28 +338,43 @@ export const resetPassword = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ success: false, message: 'User not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // OTP validation
-    if (user.resetOtp === '' || user.resetOtp !== otp) {
-      return res.status(401).json({ success: false, message: 'Invalid OTP' });
+    if (user.resetOtp === "" || user.resetOtp !== otp) {
+      return res.status(401).json({ success: false, message: "Invalid OTP" });
     }
 
     // Check Reset OTP Expiry
     if (user.resetOtpExpireAt < Date.now()) {
-      return res.status(410).json({ success: false, message: 'OTP Expired' });
+      return res.status(410).json({ success: false, message: "OTP Expired" });
     }
 
     // Update password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    user.resetOtp = '';
+    user.resetOtp = "";
     user.resetOtpExpireAt = 0;
 
     await user.save();
-    return res.status(200).json({ success: true, message: 'Password has been reset successfully' });
+    return res
+      .status(200)
+      .json({ success: true, message: "Password has been reset successfully" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
+// ====================== LOGOUT ======================
+export const logout = (req, res) => {
+  try {
+    // You can optionally clear cookies here if using them (e.g., res.clearCookie('token'))
+    return res
+      .status(200)
+      .json({ success: true, message: "User logged out successfully" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
