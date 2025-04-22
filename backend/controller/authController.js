@@ -91,7 +91,6 @@ export const register = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again.",
-      id: user._id,
     });
   }
 };
@@ -353,6 +352,17 @@ export const resetPassword = async (req, res) => {
       return res.status(410).json({ success: false, message: "OTP Expired" });
     }
 
+      // Validate password strength
+      const isValidPassword =
+      /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(newPassword);
+    if (!isValidPassword) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long, include one uppercase letter, and one special character",
+      });
+    }
+
     // Update password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
@@ -379,3 +389,5 @@ export const logout = (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+

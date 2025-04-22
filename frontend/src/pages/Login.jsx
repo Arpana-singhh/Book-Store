@@ -11,6 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
+  const [loadingRedirect, setLoadingRedirect] = useState(true);
 
   const navigate = useNavigate();
   const { backendUrl, isLoggedin, setIsLoggedin, userData, getUserData } =
@@ -30,7 +31,6 @@ const Login = () => {
         if (data.success) {
           toast.success(data.message);
           localStorage.setItem("userEmail", email);
-          localStorage.setItem("userId", data.id);
           navigate("/verify-email");
         } else {
           toast.error(data.message);
@@ -55,19 +55,35 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.log(error);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong";
-      toast.error(errorMessage);
+      const status = error.response?.status;
+      const message =
+        error.response?.data?.message || error.message || "Something went wrong";
+  
+      if (status === 403) {
+       
+        toast.info("Please verify your email before logging in. Check Your Email for Otp");
+        navigate("/verify-email");
+      } else {
+        toast.error(message);
+      }
     }
   };
 
-  useEffect(() => {
-    isLoggedin && userData && userData.isAccountVerified && navigate("/");
-  }, [isLoggedin, userData]);
 
+  useEffect(() => {
+    if (isLoggedin) {
+      if (userData?.isAccountVerified) {
+        navigate("/"); // redirect verified users to home
+      } else {
+        navigate("/verify-email"); // redirect unverified users
+      }
+    } else {
+      setLoadingRedirect(false); // show login form if not logged in
+    }
+  }, [isLoggedin, userData]);
+  
+
+  if (loadingRedirect) return null; 
   return (
     <div
       className="flex items-center justify-center min-h-screen px-6 sm:px-0

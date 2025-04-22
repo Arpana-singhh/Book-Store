@@ -70,16 +70,17 @@ const NavBar = () => {
           >
             All Books
           </Link>
-
-          <Link
-            to="/cart"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
-            ${activeLink === "/cart" ? "text-[#ED553B]" : ""}`}
-            onClick={() => handleLinkClick("/cart")}
-          >
-            Cart
-          </Link>
-          {!isLoggedin ? (
+          {isLoggedin && (
+              <Link
+              to="/cart"
+              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
+              ${activeLink === "/cart" ? "text-[#ED553B]" : ""}`}
+              onClick={() => handleLinkClick("/cart")}
+            >
+              Cart
+            </Link>
+          )}
+         {!isLoggedin ? (
             <Link
               to="/login"
               className={`text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]

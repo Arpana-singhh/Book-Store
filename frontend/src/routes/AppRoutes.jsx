@@ -9,6 +9,8 @@ import Cart from "../pages/Cart";
 import EmailVerify from "../pages/EmailVerify";
 import ResetPassword from "../pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
+import {PublicRoute, PrivateRoute} from './routeGuards'
+
 const AppRoutes = () => {
   return (
     <>
@@ -18,10 +20,40 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/books" element={<AllBooks />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/verify-email" element={<EmailVerify />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/cart"
+            element={
+              <PrivateRoute>
+                <Cart />
+              </PrivateRoute>
+            }
+          />
+
+          {/* ✅ Public only routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/verify-email"
+            element={
+              <PublicRoute>
+                <EmailVerify />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
         </Route>
       </Routes>
     </>
