@@ -391,3 +391,29 @@ export const logout = (req, res) => {
 };
 
 
+// ====================== UPDATE ADDRESS ======================
+
+export const updateAddress =async(req, res)=>{
+try{
+  const {id} = req.headers;
+  const {address} = req.body;
+  const user = await userModel.findById(id);
+
+  // Check if user exists
+  if (!user) {
+    return res
+      .status(404)
+      .json({ success: false, message: "User not Found" });
+  }
+  
+  await userModel.findByIdAndUpdate(id, {address:address})
+ 
+  return res
+  .status(200)
+  .json({ success: true, message: "Address Updated Successfully" });
+
+}
+catch(error){
+   return res.status(500).json({ success: false, message: error.message });
+}
+}

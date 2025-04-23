@@ -10,6 +10,7 @@ export const AppContextProvider = (props) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [loadingUser, setLoadingUser]= useState(true)
 
+  
 const getAuthState = async () => {
   const authToken = localStorage.getItem("authToken");
 

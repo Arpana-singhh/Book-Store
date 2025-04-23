@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cors from 'cors';
 import connectDB from "./config/mongodb.js";
 import authRouter from './routes/authRoutes.js'
+import adminBookRouter from './routes/adminBookRoutes.js'
 import transporter from './config/nodemailer.js'
 
 const app=express();
@@ -13,6 +14,7 @@ const allowedOrigins =['http://localhost:5173']
 app.use(cors({allowedOrigins}))
 app.use(express.json())
 app.use('/api/auth', authRouter)
+app.use('/api/auth', adminBookRouter)
 
 app.get('/', (req, res)=>{
     res.send('Server is Running')
@@ -40,3 +42,4 @@ app.listen(port, ()=>{
     console.log(`Server is running on ${port} `)
 
 })
+
