@@ -32,12 +32,8 @@ try{
         message: "Book added successfully",
       });
 }
-catch(error)
-{
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong. Please try again.",
-    });
+catch(error){
+  return res.status(500).json({ success: false, message: error.message });
 }
 }
 
@@ -77,10 +73,75 @@ export const updateBook = async (req, res) => {
   
       return res.status(200).json({ success: true, message: "Book updated successfully" });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again.",
-      });
+      return res.status(500).json({ success: false, message: error.message });
     }
   };
   
+  // ====================== REMOVE BOOK ======================
+  export const  deleteBook = async(req, res)=>{
+    try {
+      const { id, bookid } = req.headers;
+  
+      // 1. Check if user exists
+      const user = await userModel.findById(id);
+      if (!user) {
+        return res.status(400).json({ success: false, message: "User not found" });
+      }
+  
+      // 2. Check if user is admin
+      if (user.role !== "admin") {
+        return res.status(403).json({ success: false, message: "Access denied. Admins only." });
+      }
+
+      await bookModel.findByIdAndDelete(bookid);
+      return res.status(200).json({ success: true, message: "Book Deleted successfully" });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  export const getAllBooks = async(req, res)=>{
+    try{
+      const books = await bookModel.find().sort({createdAt: -1});
+      return res.json({
+        sucsess:true,
+        data:books
+      })
+    }
+    catch(error){
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  export const getRecentBook = async(req, res)=>{
+    try{
+      const books = await bookModel.find().sort({createdAt: -1}).limit(4);
+      return res.json({
+        sucsess:true,
+        data:books
+      })
+    }
+    catch(error){
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  }
+  
+export const bookDetails = async(req, res)=>{
+  try{
+    const {id} = req.params;
+    const book = await  bookModel.findById(id);
+    if(!book){
+      return res.status(404).json({
+        success:false,
+        message:"Book not Found",
+      })
+    }
+    return res.status(200).json({
+      success:true,
+      data: book
+    })
+  }
+  catch(error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}

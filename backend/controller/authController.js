@@ -90,7 +90,7 @@ export const register = async (req, res) => {
     console.error("Registration Error:", error);
     return res.status(500).json({
       success: false,
-      message: "Something went wrong. Please try again.",
+      message: `Something went wrong. Please try again.${error.message}`,
     });
   }
 };
@@ -151,7 +151,7 @@ export const login = async (req, res) => {
     console.error("Login Error", error);
     return res.status(500).json({
       success: false,
-      message: "Something went wrong. Please try again.",
+      message: `Something went wrong. Please try again.${error.message}`,
     });
   }
 };
@@ -171,7 +171,10 @@ export const getUserData = async (req, res) => {
 
     return res.status(200).json({ success: true, user });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: `Something went wrong. Please try again.${error.message}`,
+    });
   }
 };
 
@@ -220,7 +223,7 @@ export const verifyEmail = async (req, res) => {
     console.error("Email Verification Error", error);
     return res.status(500).json({
       success: false,
-      message: "Something went wrong. Please try again.",
+      message: `Something went wrong. Please try again.${error.message}`,
     });
   }
 };

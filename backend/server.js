@@ -4,6 +4,9 @@ import cors from 'cors';
 import connectDB from "./config/mongodb.js";
 import authRouter from './routes/authRoutes.js'
 import adminBookRouter from './routes/adminBookRoutes.js'
+import favBookRouter from './routes/favouriteRoute.js'
+import cartRouter from './routes/cartRoutes.js'
+import orderRouter from './routes/orderRoute.js'
 import transporter from './config/nodemailer.js'
 
 const app=express();
@@ -15,11 +18,13 @@ app.use(cors({allowedOrigins}))
 app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/auth', adminBookRouter)
+app.use('/api/auth', favBookRouter)
+app.use('/api/auth', cartRouter)
+app.use('/api/auth', orderRouter)
 
 app.get('/', (req, res)=>{
     res.send('Server is Running')
 })
-
 
 app.get('/test-email', async (req, res) => {
     try {
@@ -42,4 +47,4 @@ app.listen(port, ()=>{
     console.log(`Server is running on ${port} `)
 
 })
-
+ 
