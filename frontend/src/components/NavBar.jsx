@@ -54,15 +54,6 @@ const NavBar = () => {
           </Link>
 
           <Link
-            to="/about"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
-            ${activeLink === "/about" ? "text-[#ED553B]" : ""}`}
-            onClick={() => handleLinkClick("/about")}
-          >
-            About
-          </Link>
-
-          <Link
             to="/books"
             className={`text-[18px] font-[700] text-[#232323] px-[20px]transition duration-300 ease-in-out hover:text-[#ED553B] 
             ${activeLink === "/books" ? "text-[#ED553B]" : ""}`}
@@ -80,6 +71,16 @@ const NavBar = () => {
               Cart
             </Link>
           )}
+
+           <Link
+            to="/profile"
+            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
+            ${activeLink === "/profile" ? "text-[#ED553B]" : ""}`}
+            onClick={() => handleLinkClick("/profile")}
+          >
+            Profile
+          </Link>
+
          {!isLoggedin ? (
             <Link
               to="/login"

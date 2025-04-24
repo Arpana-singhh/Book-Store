@@ -14,3 +14,4 @@ export const PrivateRoute = ({ children }) => {
     if (loadingUser) return null;
     return !isLoggedin ? children : <Navigate to="/" />;
   };
+

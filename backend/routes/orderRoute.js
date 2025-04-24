@@ -1,5 +1,5 @@
 import express from 'express'
-import {getAllOrders, getOrderHistory, placeOrder, Test, updateOrderStatus} from '../controller/orderController.js'
+import {getAllOrders, getOrderHistory, placeOrder, updateOrderStatus} from '../controller/orderController.js'
 import  {authenticateToken} from '../middleware/userAuth.js'
 const orderRoutes =express.Router();
 
