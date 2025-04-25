@@ -8,43 +8,41 @@ export const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [userData, setUserData] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
-  const [loadingUser, setLoadingUser]= useState(true)
+  const [loadingUser, setLoadingUser] = useState(true);
 
-  
-const getAuthState = async () => {
-  const authToken = localStorage.getItem("authToken");
+  const getAuthState = async () => {
+    const authToken = localStorage.getItem("authToken");
 
-  if (!authToken) {
-    setIsLoggedin(false);
-    setLoadingUser(false); // 🔁 Don't leave your app hanging
-    return; // ⛔ Skip API call if not logged in
-  }
-
-  try {
-    const { data } = await axios.get(backendUrl + "api/auth/is-auth", {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (data.success) {
-      setIsLoggedin(true);
-      await getUserData(); // only if token is valid
+    if (!authToken) {
+      setIsLoggedin(false);
+      setLoadingUser(false);
+      return;
     }
-  } catch (error) {
-    console.log(error);
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Something went wrong";
-    toast.error(errorMessage);
-    localStorage.clear(); // 👈 Optional: clear bad token
-    setIsLoggedin(false);
-  } finally {
-    setLoadingUser(false);
-  }
-};
 
+    try {
+      const { data } = await axios.get(backendUrl + "api/auth/is-auth", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (data.success) {
+        setIsLoggedin(true);
+        await getUserData();
+      }
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      toast.error(errorMessage);
+      localStorage.clear(); // 👈 Optional: clear bad token
+      setIsLoggedin(false);
+    } finally {
+      setLoadingUser(false);
+    }
+  };
 
   useEffect(() => {
     getAuthState();
@@ -53,16 +51,16 @@ const getAuthState = async () => {
   const getUserData = async () => {
     const token = localStorage.getItem("authToken");
     const userId = localStorage.getItem("userId");
-  
+
     if (!token || !userId) return;
-  
+
     try {
-      const res = await axios.get(`${backendUrl}api/auth/getUserData`, {
+      const { data } = await axios.get(backendUrl + "api/auth/get-user", {
         headers: { Authorization: `Bearer ${token}`, id: userId },
       });
-  
-      if (res.data.success) {
-        // update state or context
+
+      if (data.success) {
+        setUserData(data.user);
       }
     } catch (error) {
       console.log(error);
@@ -73,7 +71,7 @@ const getAuthState = async () => {
       }
     }
   };
-  
+
   const value = {
     backendUrl,
     getUserData,
@@ -81,9 +79,11 @@ const getAuthState = async () => {
     setUserData,
     isLoggedin,
     setIsLoggedin,
-    loadingUser
+    loadingUser,
   };
   return (
-    <AppContent.Provider value={value}>{props.children}</AppContent.Provider>
+    <>
+      <AppContent.Provider value={value}>{props.children}</AppContent.Provider>
+    </>
   );
 };

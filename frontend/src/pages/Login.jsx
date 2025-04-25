@@ -39,7 +39,7 @@ const Login = () => {
         const { data } = await axios.post(backendUrl + "api/auth/login", {
           email,
           password,
-        });
+        });  
 
         if (data.success) {
           setIsLoggedin(true);
@@ -66,7 +66,7 @@ const Login = () => {
       } else {
         toast.error(message);
       }
-    }
+    } 
   };
 
 

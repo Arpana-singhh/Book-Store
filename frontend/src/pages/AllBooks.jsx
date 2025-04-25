@@ -34,7 +34,7 @@ const AllBooks = () => {
                   <p className="text-[14px] text-gray-600 text-center">{item.author}</p>
                   <p className="text-center">{item.price}</p>
                   <div className="flex justify-center items-center">
-                    <button className="mt-2 px-3 py-1 bg-[#ED553B] text-white rounded">Add To Cart</button>
+                    <button className="mt-2 px-3 py-1 bg-[#ED553B] text-white rounded">Read More</button>
                   </div>
                  
                 </div>

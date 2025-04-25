@@ -11,6 +11,9 @@ import ResetPassword from "../pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import {PublicRoute, PrivateRoute} from './routeGuards'
 import BookDetail from "../components/BookDetail";
+import Favourites from "../components/Profile/Favourites";
+import OrderHistory from "../components/Profile/OrderHistory";
+import Settings from "../components/Profile/Settings";
 
 const AppRoutes = () => {
   return (
@@ -19,7 +22,11 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />}>
+          <Route index element={<Favourites/>} />
+          <Route path="/profile/orders" element={<OrderHistory/>} />
+          <Route path="/profile/settings"  element={<Settings/>} />
+          </Route>
           <Route path="/books" element={<AllBooks />} />
           <Route path="/book-detail/:id" element={<BookDetail />} />
           <Route

@@ -112,4 +112,26 @@ export const addBookToFavourite = async (req, res) => {
       return res.status(500).json({ success: false, message: error.message });
     }
 }
-  
+
+// ====================== FETCH USER FAVOURITE BOOK IDS ======================
+
+export const getUserFavouriteIds = async (req, res) => {
+  try {
+    const { id } = req.headers;
+
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      favourites: user.favourites, // Just book IDs
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
