@@ -36,15 +36,15 @@ const Footer = () => {
                 <h4 className="font-[600] text-[24px] text-[#ED553B] mb-[39px]">INFORMATION</h4>
                 <div className="flex flex-col gap-[10px]">
                     <a href="mailto:dummyemail@gmail.com" className="leading-[30px] flex items-center gap-[8px] font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">
-                        <i class="fa-solid fa-envelope"></i>
+                        <i className="fa-solid fa-envelope"></i>
                         <span className="mt-[-3px]">dummyemail@gmail.com</span>
                     </a>
                     <a href="tel:+1234567890" className="leading-[30px] flex items-center gap-[8px] font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">
-                        <i class="fa-solid fa-phone"></i>
+                        <i className="fa-solid fa-phone"></i>
                         <span>+123 456 7890</span>
                     </a>
                     <a href="https://www.google.co.in/maps" className="leading-[30px] flex items-center gap-[8px] font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">
-                        <i class="fa-solid fa-location-dot"></i>
+                        <i className="fa-solid fa-location-dot"></i>
                         <span>1234 Elm Street, Suite 567, Downtown City, State 12345</span>
                     </a>
                 </div>

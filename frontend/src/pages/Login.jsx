@@ -1,67 +1,94 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// import { AppContent } from "../context/AppContext";
+import { AppContent } from "../../context/AppContext";
 import axios from "axios";
 
 const Login = () => {
   const [state, setState] = useState("Sign Up");
-  const [name, setName] = useState("");
+  const [username, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [loadingRedirect, setLoadingRedirect] = useState(true);
 
   const navigate = useNavigate();
+  const { backendUrl, isLoggedin, setIsLoggedin, userData, getUserData } =
+    useContext(AppContent);
 
-  // const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent);
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
 
-  // const onSubmiHandler = async(e) => {
-  //   try {
-  //     e.preventDefault();
+      if (state === "Sign Up") {
+        const { data } = await axios.post(backendUrl + "api/auth/register", {
+          username,
+          email,
+          password,
+          address,
+        });
+        if (data.success) {
+          toast.success(data.message);
+          localStorage.setItem("userEmail", email);
+          navigate("/verify-email");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const { data } = await axios.post(backendUrl + "api/auth/login", {
+          email,
+          password,
+        });  
 
-  //     axios.defaults.withCredentials = true;
-  //     if (state === "Sign Up") {
-  //       const { data } = await axios.post(backendUrl + "api/auth/register", {
-  //         name,
-  //         email,
-  //         password,
-  //       });
-  //       if (data.success) {
-  //         setIsLoggedin(true);
-  //         getUserData()
-  //         navigate("/");
-  //       } else {
-  //         toast.error(data.message);
-  //       }
-  //     } else {
-  //       const { data } = await axios.post(backendUrl + "api/auth/login", {
-  //         email,
-  //         password,
-  //       });
-  //       if (data.success) {
-
-  //         setIsLoggedin(true);
-  //         getUserData()
-  //         navigate("/");
-  //       } else {
-  //         toast.error(data.message);
-  //       }
-  //     }
-  //   } catch (error) {
-  //       console.log(error); // <-- log full error
-  //       const errorMessage = error.response?.data?.message || error.message || "Something went wrong";
-  //       toast.error(errorMessage);
-  //   }
-  // };
+        if (data.success) {
+          setIsLoggedin(true);
+          toast.success(data.message);
+          localStorage.setItem("userId", data.id);
+          localStorage.setItem("authToken", data.token);
+          localStorage.setItem("userRole", data.role);
+          localStorage.setItem("userEmail", email);
+          getUserData();
+          navigate("/");
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      const status = error.response?.status;
+      const message =
+        error.response?.data?.message || error.message || "Something went wrong";
+  
+      if (status === 403) {
+       
+        toast.info("Please verify your email before logging in. Check Your Email for Otp");
+        navigate("/verify-email");
+      } else {
+        toast.error(message);
+      }
+    } 
+  };
 
 
+  useEffect(() => {
+    if (isLoggedin) {
+      if (userData?.isAccountVerified) {
+        navigate("/"); // redirect verified users to home
+      } else {
+        navigate("/verify-email"); // redirect unverified users
+      }
+    } else {
+      setLoadingRedirect(false); // show login form if not logged in
+    }
+  }, [isLoggedin, userData]);
+  
 
+  if (loadingRedirect) return null; 
   return (
     <div
       className="flex items-center justify-center min-h-screen px-6 sm:px-0
     bg-gradient-to-br from-blue-200 to-purple-400"
     >
-   
       <div className="bg-slate-900 p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm">
         <h2 className="text-3xl font-semibold text-white text-center mb-3">
           {state === "Sign Up" ? "Create Account" : "Login"}
@@ -71,17 +98,16 @@ const Login = () => {
             ? "Create your Account"
             : "Login to your account!"}
         </p>
-        <form>
+        <form onSubmit={handleSubmit}>
           {state === "Sign Up" && (
             <div
               className="mb-4 flex items-center gap-3 w-full px-5 py-2.5
                    rounded-full bg-[#333a5c]"
             >
-              <img src={assets.person_icon} alt="" />
               <input
                 type="text"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
+                onChange={(e) => setuserName(e.target.value)}
+                value={username}
                 className="bg-transparent outline-none"
                 placeholder="Full Name"
                 required
@@ -93,7 +119,6 @@ const Login = () => {
             className="mb-4 flex items-center gap-3 w-full px-5 py-2.5
             rounded-full bg-[#333a5c]"
           >
-            <img src={assets.mail_icon} alt="" />
             <input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +133,6 @@ const Login = () => {
             className="mb-4 flex items-center gap-3 w-full px-5 py-2.5
             rounded-full bg-[#333a5c]"
           >
-            <img src={assets.lock_icon} alt="" />
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
@@ -118,6 +142,20 @@ const Login = () => {
               required
             />
           </div>
+          {state === "Sign Up" && (
+            <div
+              className="mb-4 flex items-center gap-3 w-full px-5 py-2.5
+              rounded-full bg-[#333a5c]"
+            >
+              <textarea
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Address"
+                required
+                value={address}
+                className="bg-transparent outline-none overflow-auto resize-none"
+              ></textarea>
+            </div>
+          )}
 
           <p
             onClick={() => navigate("/reset-password")}

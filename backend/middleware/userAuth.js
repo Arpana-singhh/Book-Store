@@ -1,21 +1,24 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
-export const authenticateToken = (req, res, next)=>{
-    const authHeader = req.headers["authorization"]; 
-    const token = authHeader && authHeader.split(" ")[1];
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-    if(!token){
-        return res.status(401).json({success:false, message:'Autentication Token required'})
+  if (!token) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Autentication Token required" });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ message: "Token expired Please Log in Again" });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
-        if(err){
-            return res.status(401).json({message:"Token expired Please Log in Again"})
-        }
+    req.user = user;
 
-        req.user = user;
-      
-        next();
-    })
-}
-
+    next();
+  });
+};

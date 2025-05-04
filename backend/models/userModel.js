@@ -53,19 +53,18 @@ const userSchema = new mongoose.Schema(
         },
         favourites: [{
             type: mongoose.Types.ObjectId,
-            ref: 'books'
-          }],
-          cart: [{
-            type: mongoose.Types.ObjectId,
-            ref: 'books'
-          }],
-          order: [{
-            type: mongoose.Types.ObjectId,
-            ref: 'order'
-          }],
+            ref: 'book'
+        }],
+        cart: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'book'
+        }],
+        order: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'order'
+        }],
     },
     {timestamps:true}
 )
-
 const userModel=mongoose.models.user || mongoose.model('user', userSchema)
 export default userModel;
