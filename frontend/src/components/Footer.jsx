@@ -1,8 +1,31 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { assets } from '../assets/assets'
-
+import { Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const Footer = () => {
+    const [isSpinWheelDone, setIsSpinWheelDone]=useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+      };
+      const handleOk = () => {
+        setIsModalOpen(false);
+      };
+      const handleCancel = () => {
+        setIsModalOpen(false);
+      };
+
+    const navigate=useNavigate();
+    const accessSpinWheel=()=>{
+      if(isSpinWheelDone){
+        showModal();
+      }
+      else{
+        navigate('/spin-wheel')
+      }
+    }
   return (
     <>
 
@@ -29,6 +52,13 @@ const Footer = () => {
                     </li>
                     <li>
                         <Link to="/cart" title="CART" className="font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">CART</Link>
+                    </li>
+                    <li>
+                        <Link to="/spin-wheel" onClick={(e)=>{
+                            e.preventDefault();
+                            accessSpinWheel();
+
+                        }} title="SPIN_WHEEL" className="font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">SPIN WHEEL</Link>
                     </li>
                 </ul>
             </div>
@@ -73,7 +103,18 @@ const Footer = () => {
             </div>
         </div>
     </div>
-   
+    {/* open={isModalOpen} */}
+    <Modal  open={isModalOpen} onOk={handleOk} onCancel={handleCancel} className="spinModal">
+        <div className='modal-chance'>
+            <h4 className="text-[#263238] text-[16px] leading-[24px]">
+                You've already used your chance to spin the wheel !
+            </h4>
+            <p className="text-[#263238] text-[16px] leading-[24px]">
+                Stay tuned for upcoming offers and opportunities!
+            </p>
+        </div>
+  
+      </Modal>
     </>
   )
 }

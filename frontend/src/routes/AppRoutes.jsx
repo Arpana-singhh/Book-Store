@@ -14,6 +14,7 @@ import BookDetail from "../components/BookDetail";
 import Favourites from "../components/Profile/Favourites";
 import OrderHistory from "../components/Profile/OrderHistory";
 import Settings from "../components/Profile/Settings";
+import SpinWheel from "../pages/spin-wheel";
 
 const AppRoutes = () => {
   return (
@@ -24,10 +25,11 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />}>
           <Route index element={<Favourites/>} />
-          <Route path="/profile/orders" element={<OrderHistory/>} />
-          <Route path="/profile/settings"  element={<Settings/>} />
+            <Route path="/profile/orders" element={<OrderHistory/>} />
+            <Route path="/profile/settings"  element={<Settings/>} />
           </Route>
           <Route path="/books" element={<AllBooks />} />
+          <Route path="/spin-wheel" element={< SpinWheel />} />
           <Route path="/book-detail/:id" element={<BookDetail />} />
           <Route
             path="/cart"
