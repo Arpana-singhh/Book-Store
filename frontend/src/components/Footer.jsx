@@ -1,37 +1,15 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 const Footer = () => {
-    const [isSpinWheelDone, setIsSpinWheelDone]=useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
-      };
-      const handleOk = () => {
-        setIsModalOpen(false);
-      };
-      const handleCancel = () => {
-        setIsModalOpen(false);
-      };
-
-    const navigate=useNavigate();
-    const accessSpinWheel=()=>{
-      if(isSpinWheelDone){
-        showModal();
-      }
-      else{
-        navigate('/spin-wheel')
-      }
-    }
   return (
     <>
 
 
     <div className="bg-[linear-gradient(90deg,_rgba(255,230,230,0.52)_0%,_rgba(245,255,254,0.52)_13.33%,_rgba(252,243,255,0.52)_54.58%,_rgba(255,244,230,0.52)_99.86%)] py-[106px]">
-        <div className="flex justify-between px-[60px]">
+        <div className="flex justify-between layout-fixer">
             <div>
                 <div>
                     <img src={assets.Logo} alt=""/>
@@ -53,13 +31,7 @@ const Footer = () => {
                     <li>
                         <Link to="/cart" title="CART" className="font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">CART</Link>
                     </li>
-                    <li>
-                        <Link to="/spin-wheel" onClick={(e)=>{
-                            e.preventDefault();
-                            accessSpinWheel();
-
-                        }} title="SPIN_WHEEL" className="font-[400] text-[18px] text-[#263238] hover:text-[#ED553B] transition duration-300 ease-in-out">SPIN WHEEL</Link>
-                    </li>
+                
                 </ul>
             </div>
             <div className="flex flex-col">
@@ -94,7 +66,7 @@ const Footer = () => {
                 </a>
             </div>
         </div>
-        <div className="px-[60px] mt-[60px] flex justify-between text-[#011627]">
+        <div className="layout-fixer mt-[60px] flex justify-between text-[#011627]">
             <p>© 2025 Arihant. All Rights Reserved.</p>
             <div className="flex gap-[15px] items-center">
                 <span className="text-[#011627] hover:text-[#ED553B] transition duration-300 ease-in-out">Privacy</span>
@@ -103,18 +75,8 @@ const Footer = () => {
             </div>
         </div>
     </div>
-    {/* open={isModalOpen} */}
-    <Modal  open={isModalOpen} onOk={handleOk} onCancel={handleCancel} className="spinModal">
-        <div className='modal-chance'>
-            <h4 className="text-[#263238] text-[16px] leading-[24px]">
-                You've already used your chance to spin the wheel !
-            </h4>
-            <p className="text-[#263238] text-[16px] leading-[24px]">
-                Stay tuned for upcoming offers and opportunities!
-            </p>
-        </div>
-  
-      </Modal>
+
+
     </>
   )
 }

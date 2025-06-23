@@ -10,6 +10,9 @@ const BookDetail = () => {
   const { backendUrl } = useContext(AppContent);
   const [isFav, setIsFav] = useState(false);
 
+  let authToken = localStorage.getItem("authToken");
+  let userId = localStorage.getItem("userId");
+
   // Get Book Detail
   const getBookDetail = async () => {
     let result = await axios.get(backendUrl + `api/auth/book-detail/${id}`);
@@ -19,10 +22,7 @@ const BookDetail = () => {
 
   // Add Book to Favourite or Remove Book from Favourite
   const handleFavourite = async () => {
-    const authToken = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-
-    const headers = {
+    let headers = {
       authorization: `Bearer ${authToken}`,
       id: userId,
       bookid: id,
@@ -37,7 +37,6 @@ const BookDetail = () => {
           null,
           { headers }
         );
-        console.log("clicked1" + data);
         if (data.success) {
           toast.success(data.message);
         }
@@ -59,7 +58,6 @@ const BookDetail = () => {
           null,
           { headers }
         );
-        console.log("clicked2" + data);
         if (data.success) {
           toast.success(data.message);
         }
@@ -72,10 +70,7 @@ const BookDetail = () => {
 
   // Check Wheatre Book ALready is in favourite and manage state
   const checkIfFavourite = async () => {
-    const authToken = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-
-    const headers = {
+   const headers = {
       authorization: `Bearer ${authToken}`,
       id: userId,
     };
@@ -94,6 +89,32 @@ const BookDetail = () => {
       console.error("Error checking favourite status", error);
     }
   };
+
+  // Add Book to Cart
+  const handleAddtoCart = async()=>{
+    let headers = {
+      authorization: `Bearer ${authToken}`,
+      id: userId,
+      bookid: id,
+    };
+    
+    try{
+      const { data } = await axios.put(  backendUrl + "api/auth/add-book-to-cart",  null,   { headers } );
+      if (data.success) {
+        toast.success(data.message);
+        navigate('/cart')
+      }
+    } 
+    catch(error){
+      const status = error.response?.status;
+      const message = error.response?.data?.message || "Something went wrong";
+      toast.error(message);
+ 
+    if (status === 409) {
+      navigate('/cart')
+    }
+    }
+  }
 
   useEffect(() => {
     getBookDetail();
@@ -143,13 +164,13 @@ const BookDetail = () => {
             </div>
 
             <div className="flex gap-2">
-              <button className="bg-[#393280] text-white px-6 py-3 rounded-xl hover:bg-[#2f276f] transition-all">
+              <button className="cmn-blue-btn" onClick={handleAddtoCart}>
                 Add To Cart
               </button>
               <div>
                 <button
                   onClick={handleFavourite}
-                  className="text-[#393280] text-[20px] flex justify-center items-center h-[50px] w-[50px] border border-[#393280] rounded-full p-3 hover:bg-[#393280] hover:text-white transition-all"
+                  className="text-[#393280] text-[20px] flex justify-center items-center h-[50px] w-[50px] border border-[#393280] rounded-full p-3 hover:bg-[#393280] hover:text-white transition-all duration-300"
                 >
                   {!isFav ? (
                     <i className="fa-regular fa-heart"></i>

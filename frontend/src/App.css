@@ -210,7 +210,7 @@
     background: #3a3838;
   }
 
-  .modal-chance{
+  .spin-chance{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -219,14 +219,14 @@
   }
 
   
-  .modal-chance h4{
+  .spin-chance h4{
     color:#ffffff;
     font-size: 24px;
     text-align: center;
     line-height: 34px;
   }
 
-  .modal-chance p{
+  .spin-chance p{
   color: #ffffff;
   margin-top: 20px;
   font-size: 16px;

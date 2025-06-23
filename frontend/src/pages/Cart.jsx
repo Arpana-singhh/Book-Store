@@ -1,32 +1,56 @@
-import React from "react";
-
+import React, { useContext, useEffect, useState } from "react";
+import { AppContent } from "../../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 const Cart = () => {
-  const cartItems = [
-    {
-      _id: 1,
-      url: "https://images.unsplash.com/photo-1512820790803-83ca734da794",
-      title: "The Book of Secrets",
-      author: "Deepak Chopra",
-      price: 499,
-      quantity: 2,
-    },
-    {
-      _id: 2,
-      url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f",
-      title: "Atomic Habits",
-      author: "James Clear",
-      price: 350,
-      quantity: 1,
-    },
-    {
-      _id: 3,
-      url: "https://images.unsplash.com/photo-1512820790803-83ca734da794",
-      title: "The Book of Secrets",
-      author: "Deepak Chopra",
-      price: 499,
-      quantity: 2,
-    },
-  ];
+  const [cartItems, setcartItems] = useState([]);
+  const { backendUrl } = useContext(AppContent);
+  let authToken = localStorage.getItem("authToken");
+  let userId = localStorage.getItem("userId");
+
+  const getCartBook = async () => {
+    const headers = {
+      authorization: `Bearer ${authToken}`,
+      id: userId,
+    };
+
+    let { data } = await axios.get(backendUrl + "api/auth/get-cart-book", {
+      headers,
+    });
+    if (data.success) {
+      setcartItems(data.data);
+      console.log(data.data)
+    }
+  };
+
+
+  const handleRemoveFromCart = async (bookId) => {
+    const headers = {
+      authorization: `Bearer ${authToken}`,
+      id: userId,
+      bookid: bookId,
+    };
+
+    try {
+      const { data } = await axios.put(backendUrl + "api/auth/remove-book-from-cart", null, { headers });
+
+      if (data.success) {
+        toast.success(data.message);
+        setcartItems(cartItems.filter((book) => book._id !== bookId));
+       
+      } else {
+        console.log("Error removing from favourites");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong";
+      toast.error(message);
+    }
+  };
+
+  useEffect(()=>{
+    getCartBook();
+  },[])
+
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -55,10 +79,10 @@ const Cart = () => {
                 <div className="flex items-center space-x-4 mt-auto">
                   <div className="flex items-center border rounded-[6px] overflow-hidden">
                     <button className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]">-</button>
-                    <span className="px-4">{item.quantity}</span>
+                    <span className="px-4">1</span>
                     <button className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]">+</button>
                   </div>
-                  <button className="text-red-500 hover:underline">Remove</button>
+                  <button className="cmn-org-btn" onClick={() => handleRemoveFromCart(item._id)}>Remove</button>
                 </div>
               </div>
             </div>

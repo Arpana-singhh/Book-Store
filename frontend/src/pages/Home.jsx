@@ -20,11 +20,11 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div className="w-full py-8 bg-custom-gradient overflow-hidden">
+      <div className="layout-fixer w-full py-8 bg-custom-gradient overflow-hidden">
         <div>
           <Slider {...settings} className="hero-slider">
             <div className="relative h-[100%]">
-              <div className="mx-[60px] min-h-[657px] flex items-center">
+              <div className="min-h-[657px] flex items-center">
                 <div className="flex flex-col">
                   <h1 className="mb-[9px] text-[60px] font-[600] text-[#393280]">
                     Lipsum Dolor Si

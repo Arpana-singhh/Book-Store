@@ -60,3 +60,34 @@
     color: #ED553B !important;
 }
   
+.cmn-slider-dot  .slick-dots li.slick-active button::before{
+  color: #ED553B !important;
+  border: 1px solid #ED553B !important;
+}
+
+.cmn-slider-dot .slick-dots li button::before{
+  color: #ED553B !important;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  transition:all 0.3s ease-in-out; 
+}
+
+.cmn-slider-dot .slick-dots li button:hover::before, .cmn-slider-dot .slick-dots li button:focus::before{
+  border: 1px solid #ED553B !important;
+}
+
+
+@layer components {
+  .cmn-org-btn{
+    @apply px-3 py-1 bg-secondary text-white rounded hover:bg-primary transition-all duration-300
+  }
+  .cmn-blue-btn{
+    @apply bg-primary text-white px-6 py-3 rounded-xl hover:bg-secondary transition-all duration-300
+  }
+  .layout-fixer{
+    @apply px-[100px];
+  }
+}

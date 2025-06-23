@@ -3,7 +3,7 @@ import React from 'react'
 
 const TopBar = () => {
   return (
-    <div className="bg-[#393280] w-full px-[60px] py-[18px] text-white">
+    <div className="bg-[#393280] w-full layout-fixer py-[18px] text-white">
       <div className="flex justify-between items-center">
         <div>
       
@@ -13,20 +13,40 @@ const TopBar = () => {
           </a>
         </div>
 
-        <div className="flex items-center gap-[42px]">
+        <div className="flex items-center gap-[15px]">
         
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-            <i className="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <i className="fa-brands fa-instagram"></i>
-          </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-            <i className="fa-brands fa-linkedin-in"></i>
-          </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-            <i className="fa-brands fa-x-twitter"></i>
-          </a>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-transparent border border-white w-[30px] h-[30px] flex justify-center items-center rounded-full text-white transition-all duration-300 hover:bg-white hover:text-primary"
+        >
+          <i className="fa-brands fa-facebook-f"></i>
+        </a>
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-transparent border border-white w-[30px] h-[30px] flex justify-center items-center rounded-full text-white transition-all duration-300 hover:bg-white hover:text-primary"
+        >
+          <i className="fa-brands fa-instagram"></i>
+        </a>
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-transparent border border-white w-[30px] h-[30px] flex justify-center items-center rounded-full text-white transition-all duration-300 hover:bg-white hover:text-primary"
+        >
+          <i className="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a
+          href="https://twitter.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-transparent border border-white w-[30px] h-[30px] flex justify-center items-center rounded-full text-white transition-all duration-300 hover:bg-white hover:text-primary"
+        >
+          <i className="fa-brands fa-x-twitter"></i>
+        </a>
         </div>
       </div>
     </div>

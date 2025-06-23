@@ -37,7 +37,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="px-[60px] py-[15px] z-[2] sticky w-full top-0 bg-white">
+    <div className="layout-fixer py-[15px] z-[2] sticky w-full top-0 bg-white">
       <div className="flex justify-between items-center">
         <Link to="/" className="h-[55px] w-[55px]">
           <img src={assets.Logo} alt="Leaf&Ink" />

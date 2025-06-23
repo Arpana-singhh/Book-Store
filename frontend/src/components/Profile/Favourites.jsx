@@ -3,15 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AppContent } from "../../../context/AppContext";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Favourites = () => {
   const [favBooks, setIsFavBooks] = useState("");
   const { backendUrl } = useContext(AppContent);
+  let authToken = localStorage.getItem("authToken");
+  let userId = localStorage.getItem("userId");
 
   const getFavouriteBook = async () => {
-    const authToken = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-
     const headers = {
       authorization: `Bearer ${authToken}`,
       id: userId,
@@ -26,9 +26,6 @@ const Favourites = () => {
   };
 
   const handleRemoveFromFavourite = async (bookId) => {
-    const authToken = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-
     const headers = {
       authorization: `Bearer ${authToken}`,
       id: userId,
@@ -40,13 +37,16 @@ const Favourites = () => {
 
       if (data.success) {
         // Remove the book from the state after successful removal
+        toast.success(data.message);
         setIsFavBooks(favBooks.filter((book) => book._id !== bookId));
+       
       } else {
         // Handle error (optional)
         console.log("Error removing from favourites");
       }
     } catch (error) {
-      console.error("Error:", error);
+      const message = error.response?.data?.message || "Something went wrong";
+      toast.error(message);
     }
   };
 
@@ -55,7 +55,7 @@ const Favourites = () => {
   }, []);
   return (
     <>
-      <div className="pt-[0] pb-[92px] px-[60px]">
+      <div className="pt-[0] pb-[92px] px-[20px]">
         <h1 className="font-[700] text-[32px] text-[#393280] mb-10">
           Explore Your Favourites
         </h1>
@@ -65,7 +65,7 @@ const Favourites = () => {
               <div
                 // to={`/book-detail/${item._id}`}
                 key={index}
-                className="w-[calc(100%/3-(2*20px)/3)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px]"
+                className="w-[calc(100%/3-(2*20px)/3)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px] rounded-[10px] border border-transparent hover:border-[#393280] transition-all duration-300"
               >
                 <div className="w-[200px] h-[240px]">
                   <img
@@ -85,7 +85,7 @@ const Favourites = () => {
                   <div className="flex justify-center items-center">
                   <button
                       onClick={() => handleRemoveFromFavourite(item._id)}
-                      className="mt-2 px-3 py-1 bg-[#ED553B] text-white rounded"
+                      className="mt-2 cmn-org-btn"
                     >
                       Remove from Favourite
                     </button>

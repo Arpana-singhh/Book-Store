@@ -19,13 +19,13 @@ const AllBooks = () => {
   
   return (
     <>
-        <div className="pt-[0] pb-[92px] px-[60px]">
+        <div className="pt-[0] pb-[92px] layout-fixer">
           <div className="mt-[40px] flex justify-center ">
             {!bookData && <Loader/>}
           </div>
           <div className="flex flex-wrap gap-[34px] mt-[40px]">
             {bookData && bookData.map((item, index) => (
-              <Link to={`/book-detail/${item._id}`} key={index} className="w-[calc(100%/4-(3*34px)/4)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px]">
+              <Link to={`/book-detail/${item._id}`} key={index} className="w-[calc(100%/4-(3*34px)/4)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px] rounded-[10px] border border-transparent hover:border-[#393280] transition-all duration-300">
                 <div className="w-[200px] h-[240px]">
                   <img src={item.url} alt={item.title} className="w-full h-full object-cover"/>
                 </div>
