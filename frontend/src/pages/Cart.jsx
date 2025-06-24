@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContent } from "../../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+ import Hurray from '../assets/images/hurray.png'
 const Cart = () => {
   const [cartItems, setcartItems] = useState([]);
   const { backendUrl } = useContext(AppContent);
@@ -19,7 +20,6 @@ const Cart = () => {
     });
     if (data.success) {
       setcartItems(data.data);
-      console.log(data.data)
     }
   };
 
@@ -52,15 +52,92 @@ const Cart = () => {
   },[])
 
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    //  const handleIncrement = bookId => {
+    //   setcartItems(items =>
+    //     items.map(item =>
+        
+    //       item._id === bookId
+    //         ? { ...item, quantity: (item.quantity ?? 1) + 1 }
+    //         : item
+    //     )
+    //   );
+    // };
+
+
+
+    // const handleDecrement = bookId => {
+    //   setcartItems(items =>
+    //     items.map(item =>
+    //       item._id === bookId
+    //         ? { 
+    //             ...item, 
+    //             // never go below 1
+    //             quantity: Math.max(1, (item.quantity ?? 1) - 1) 
+    //           }
+    //         : item
+    //     )
+    //   );
+    // };
+      const updateQuantityBackend = async (bookId, newQty) => {
+        const headers = {
+          authorization: `Bearer ${authToken}`,
+          id: userId,
+          bookid: bookId,
+        };
+        try {
+          await axios.put(backendUrl + "api/auth/update-cart-quantity", { quantity: newQty }, { headers });
+        } catch (error) {
+          console.error("Failed to update quantity:", error);
+        }
+      };
+      
+      const handleIncrement = (bookId) => {
+        setcartItems(items =>
+          items.map(item =>
+            item._id === bookId
+              ? { ...item, quantity: (item.quantity ?? 1) + 1 }
+              : item
+          )
+        );
+        const newQty = cartItems.find(item => item._id === bookId)?.quantity ?? 1;
+        updateQuantityBackend(bookId, newQty + 1);
+      };
+      
+      const handleDecrement = (bookId) => {
+        const currentQty = cartItems.find(item => item._id === bookId)?.quantity ?? 1;
+        const newQty = Math.max(1, currentQty - 1);
+        setcartItems(items =>
+          items.map(item =>
+            item._id === bookId
+              ? { ...item, quantity: newQty }
+              : item
+          )
+        );
+        updateQuantityBackend(bookId, newQty);
+      };
+      
+    const subtotal = cartItems.reduce(
+      (acc, item) => acc + item.price * (item.quantity ?? 1),
+      0
+    );
+    const discountPercent = subtotal >= 300 ? 10 : 5;
+    const discountAmount = (subtotal * discountPercent) / 100;
+    const productTax  = 15;
+    const shipping    = 10; 
+    const shippingTax = 5; 
+    const total = subtotal - discountAmount + productTax + shipping + shippingTax
 
   return (
     <div className="mx-[60px] my-[40px]">
-      <h1 className="text-[40px] font-[600] text-[#393280] mb-[30px]">Shopping Cart</h1>
+      <div className="flex  justify-between items-center">
+        <h1 className="text-[40px] font-[600] text-[#393280] mb-[30px]">Shopping Cart</h1>
+        
+      </div>
+      
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="flex  gap-10">
         {/* Cart Items */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="max-w-[870px] w-full flex flex-col gap-5">
           {cartItems.map((item) => (
             <div
               key={item._id}
@@ -78,10 +155,10 @@ const Cart = () => {
 
                 <div className="flex items-center space-x-4 mt-auto">
                   <div className="flex items-center border rounded-[6px] overflow-hidden">
-                    <button className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]">-</button>
-                    <span className="px-4">1</span>
-                    <button className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]">+</button>
-                  </div>
+                    <button onClick={() => handleDecrement(item._id)} className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> – </button>
+                    <span className="px-4">{item.quantity ?? 1}</span>
+                    <button onClick={() => handleIncrement(item._id)}className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> + </button>
+                 </div>
                   <button className="cmn-org-btn" onClick={() => handleRemoveFromCart(item._id)}>Remove</button>
                 </div>
               </div>
@@ -89,26 +166,50 @@ const Cart = () => {
           ))}
         </div>
 
+
         {/* Summary Section */}
-        <div className="border p-6 rounded-[12px] shadow-md h-fit">
+        <div className="flex  flex-col gap-[20px] flex-grow">
+          <div className="flex  justify-between items-center gap-[30px] border py-3 px-6 rounded-[12px] shadow-md">
+            <p className="text-primary">Shop for ₹300+ and Enjoy 10% Off!</p>
+            <img src={Hurray} alt="Hurray" width="40" height="40"/>
+          </div>
+          <div className="border p-6 rounded-[12px] shadow-md h-fit">
+          
           <h2 className="text-[24px] font-[600] text-[#393280] mb-4">Order Summary</h2>
           <div className="flex justify-between mb-3">
             <span className="text-[16px]">Subtotal</span>
-            <span className="font-[500]">₹{subtotal}</span>
+            <span className="font-[500]">{"\u20B9"}{subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-4">
+          
+          <div className="flex justify-between mb-3">
+            <p className="text-[16px]"> Discount <span className="text-sm text-gray-500">({discountPercent}%)</span>
+            </p>
+            <span>₹{discountAmount.toFixed(2)}</span>
+          </div>
+          
+          <div className="flex justify-between mb-3">
+            <span className="text-[16px]">Tax</span>
+            <span>₹{productTax.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between mb-3">
             <span className="text-[16px]">Shipping</span>
-            <span className="text-green-600 font-[500]">Free</span>
+            <span>₹{shipping.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between mb-6">
+            <span className="text-[16px]">Shipping Tax</span>
+            <span>₹{shippingTax.toFixed(2)}</span>
           </div>
           <hr className="mb-4" />
-          <div className="flex justify-between mb-6 text-[18px] font-[600] text-[#393280]">
+          <div className="flex justify-between text-[18px] font-[600] text-[#393280] mb-4">
             <span>Total</span>
-            <span>₹{subtotal}</span>
+            <span>₹{total.toFixed(2)}</span>
           </div>
-          <button className="w-full bg-[#393280] text-white py-[12px] rounded-[8px] text-[16px] font-[500] hover:bg-[#2f2966] transition">
+          <button className="w-full py-[12px] cmn-blue-btn text-[16px] font-[500] rounded-[8px] transition">
             Proceed to Checkout
           </button>
         </div>
+        </div>
+       
       </div>
     </div>
   );

@@ -27,19 +27,19 @@ const ProfileSidebar = () => {
         <div className="space-y-6">
           <Link
             to="/profile"
-            className="block text-[16px] text-[#393280] hover:underline"
+            className="block text-[16px] text-[#393280] hover:text-[#232323]"
           >
             ⭐ Favourites
           </Link>
           <Link
             to="/profile/orders"
-            className="block text-[16px] text-[#393280] hover:underline"
+            className="block text-[16px] text-[#393280] hover:text-[#232323]"
           >
             📦 Order History
           </Link>
           <Link
             to="/profile/settings"
-            className="block text-[16px] text-[#393280] hover:underline"
+            className="block text-[16px] text-[#393280] hover:text-[#232323]"
           >
             ⚙️ Settings
           </Link>

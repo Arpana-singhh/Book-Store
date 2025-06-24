@@ -10,16 +10,26 @@ export const placeOrder = async(req, res)=>{
 
     for (const orderData of order){
         const newOrder = new orderModel({user: id, book: orderData._id})
+        // const newOrder = new orderModel({
+        //     user: id,
+        //     book: orderData._id,
+        //     quantity: orderData.quantity ?? 1
+        //   });
+          
         const orderDataFromDb = await newOrder.save();
         await userModel.findByIdAndUpdate(id, {$push:{order: orderDataFromDb._id}})
    
         await userModel.findByIdAndUpdate(id, {$pull:{cart : orderData._id}})
+        // await userModel.findByIdAndUpdate(id, {
+        //     $pull: { cart: { book: orderData._id } }
+        //   });
+          
    
     }
 
     return res.json({
         success:true,
-        messsage:"Message Placed Successfully"
+        messsage:"Order Placed Successfully"
     })
 
    }

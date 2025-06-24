@@ -39,8 +39,8 @@ const Category = () => {
 
   return (
     <div className="py-[92px] layout-fixer">
-      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">Categories</h4>
-      <h1 className="font-[700] text-[32px] text-[#393280] mb-10">Explore our Top Categories</h1>
+      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">Genre</h4>
+      <h1 className="font-[700] text-[32px] text-[#393280] mb-10">Explore our Genre</h1>
 
 
       <Slider {...settings} className="category-slider cmn-slider-dot">

@@ -23,6 +23,8 @@ export const addBookToCart = async (req, res) => {
       }
 
       const isBookInCart = user.cart.includes(bookid);
+      // const isBookInCart = user.cart.some(item => item.book.toString() === bookid);
+
       if (isBookInCart) {
         return res.status(409).json({
           success: false,
@@ -31,6 +33,10 @@ export const addBookToCart = async (req, res) => {
       }
   
       await userModel.findByIdAndUpdate(id, { $push: { cart: bookid } });
+      // await userModel.findByIdAndUpdate(id, {
+      //   $push: { cart: { book: bookid, quantity: 1 } }
+      // });
+      
   
       return res.status(200).json({
         success: true,
@@ -90,6 +96,8 @@ export const addBookToCart = async (req, res) => {
           const {id} = req.headers;
   
           const user = await userModel.findById(id).populate("cart")
+          // const user = await userModel.findById(id).populate("cart.book");
+
           if(!user){
               return res.status(404).json({
                   success: false,
@@ -110,3 +118,55 @@ export const addBookToCart = async (req, res) => {
       }
   }
     
+
+
+  export const updateCartQuantity = async (req, res) => {
+    try {
+      const { id, bookid } = req.headers;
+      const { quantity } = req.body;
+  
+      const user = await userModel.findById(id);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+  
+      // Validate quantity
+      if (isNaN(quantity) || quantity < 1) {
+        return res.status(400).json({
+          success: false,
+          message: "Quantity must be a number greater than 0"
+        });
+      }
+  
+      // Update quantity in cart
+      const updatedUser = await userModel.findOneAndUpdate(
+        { _id: id, "cart.book": bookid },
+        { $set: { "cart.$.quantity": quantity } },
+        { new: true }
+      ).populate("cart.book");
+  
+      if (!updatedUser) {
+        return res.status(404).json({
+          success: false,
+          message: "Book not found in cart"
+        });
+      }
+  
+      return res.status(200).json({
+        success: true,
+        message: "Cart quantity updated successfully",
+        data: updatedUser.cart
+      });
+  
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  };
+  
+ 
