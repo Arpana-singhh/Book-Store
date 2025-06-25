@@ -4,10 +4,12 @@ import { assets } from "../assets/assets";
 import { toast } from "react-toastify";
 import { AppContent } from "../../context/AppContext";
 import axios from "axios";
+import { Modal, Button } from "antd";
 const NavBar = () => {
   const [activeLink, setActiveLink] = useState("/");
   const { backendUrl, setUserData, isLoggedin, setIsLoggedin } =
     useContext(AppContent);
+    const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const navigate = useNavigate();
   const handleLinkClick = (path) => {
     setActiveLink(path);
@@ -37,76 +39,103 @@ const NavBar = () => {
   };
 
   return (
-    <div className="layout-fixer py-[15px] z-[2] sticky w-full top-0 bg-white">
-      <div className="flex justify-between items-center">
-        <Link to="/" className="h-[55px] w-[55px]">
-          <img src={assets.Logo} alt="Leaf&Ink" />
-        </Link>
-
-        <div className="flex items-center gap-[10px]">
-          <Link
-            to="/"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
-            ${activeLink === "/" ? "text-[#ED553B]" : ""}`}
-            onClick={() => handleLinkClick("/")}
-          >
-            Home
+    <>
+      <div className="layout-fixer py-[15px] z-[2] sticky w-full top-0 bg-white">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="h-[55px] w-[55px]">
+            <img src={assets.Logo} alt="Leaf&Ink" />
           </Link>
 
-          <Link
-            to="/books"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px]transition duration-300 ease-in-out hover:text-[#ED553B] 
-            ${activeLink === "/books" ? "text-[#ED553B]" : ""}`}
-            onClick={() => handleLinkClick("/books")}
-          >
-            All Books
-          </Link>
-          {isLoggedin && (
-            <>
+          <div className="flex items-center gap-[10px]">
             <Link
-              to="/cart"
-              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
-              ${activeLink === "/cart" ? "text-[#ED553B]" : ""}`}
-              onClick={() => handleLinkClick("/cart")}
+              to="/"
+              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
+              ${activeLink === "/" ? "text-[#ED553B]" : ""}`}
+              onClick={() => handleLinkClick("/")}
             >
-              Cart
+              Home
             </Link>
 
             <Link
-            to="/profile"
-            className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
-            ${activeLink === "/profile" ? "text-[#ED553B]" : ""}`}
-            onClick={() => handleLinkClick("/profile")}
+              to="/books"
+              className={`text-[18px] font-[700] text-[#232323] px-[20px]transition duration-300 ease-in-out hover:text-[#ED553B] 
+              ${activeLink === "/books" ? "text-[#ED553B]" : ""}`}
+              onClick={() => handleLinkClick("/books")}
             >
-            Profile
+              All Books
             </Link>
-            
-            </>
-    
-          )}
+            {isLoggedin && (
+              <>
+              <Link
+                to="/cart"
+                className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
+                ${activeLink === "/cart" ? "text-[#ED553B]" : ""}`}
+                onClick={() => handleLinkClick("/cart")}
+              >
+                Cart
+              </Link>
 
-     
+              <Link
+              to="/profile"
+              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
+              ${activeLink === "/profile" ? "text-[#ED553B]" : ""}`}
+              onClick={() => handleLinkClick("/profile")}
+              >
+              Profile
+              </Link>
+              
+              </>
+      
+            )}
 
-         {!isLoggedin ? (
-            <Link
-              to="/login"
-              className={`text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]
-           ${activeLink === "/login" ? "text-[#ED553B]" : ""}`}
-              onClick={() => handleLinkClick("/login")}
-            >
-              Login
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]"
-            >
-              Logout
-            </button>
-          )}
+      
+
+          {!isLoggedin ? (
+              <Link
+                to="/login"
+                className={`text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]
+            ${activeLink === "/login" ? "text-[#ED553B]" : ""}`}
+                onClick={() => handleLinkClick("/login")}
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={() => setIsLogoutModalVisible(true)}
+                className="text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]"
+              >
+                Logout
+              </button>
+
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <Modal
+      open={isLogoutModalVisible}
+      title={
+        <div className="text-[20px] font-bold text-[#393280] border-b pb-2">
+          🔒 Confirm Logout
+        </div>
+      }
+      onCancel={() => setIsLogoutModalVisible(false)}
+      footer={null}
+    >
+      <p className="text-232323 text-[16px] mb-6">
+        Are you sure you want to logout?
+      </p>
+      <div className="flex justify-end gap-3">
+        <Button onClick={() => setIsLogoutModalVisible(false)} className="border border-primary rounded-[5px] text-primary bg-transparent min-w-[100px] transition-all duration-300 hover:!bg-primary hover:!text-white hover:!border-primary">
+          No
+        </Button>
+        <Button onClick={handleLogout} className="border border-primary  bg-primary rounded-[5px] text-white min-w-[100px] transition-all duration-300 hover:!bg-transparent hover:!text-primary hover:!border-primary">
+          Yes
+        </Button>
+      </div>
+    </Modal>
+    </>
+   
+  
   );
 };
 

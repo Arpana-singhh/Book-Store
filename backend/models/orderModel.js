@@ -10,6 +10,11 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'book'
     },
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1
+    },
     status: {
       type: String,
       default: 'Order Placed',

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { AppContent } from "../../context/AppContext";
 
 const ProfileSidebar = () => {
-  const { userData } = useContext(AppContent);
-
+  const { userData, userRole } = useContext(AppContent);
+ 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col justify-between max-h-[calc(100vh-60px-85px-24px-24px)]">
+    <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col justify-between max-h-[calc(100vh-60px-85px-24px-24px)] min-h-[calc(100vh-60px-85px-24px-24px)]">
       {/* Top Section */}
       <div className="">
         {/* Avatar */}
@@ -25,31 +25,52 @@ const ProfileSidebar = () => {
 
         {/* Navigation Links */}
         <div className="space-y-6">
+        {userRole === "user" && (
+        <>
           <Link
-            to="/profile"
-            className="block text-[16px] text-[#393280] hover:text-[#232323]"
+            to="/profile/favourites"
+            className="text-center block text-[16px] text-[#393280] hover:text-[#232323]"
           >
-            ⭐ Favourites
+            ❤️ Favourites
           </Link>
           <Link
-            to="/profile/orders"
-            className="block text-[16px] text-[#393280] hover:text-[#232323]"
+            to="/profile/order-history"
+            className="text-center block text-[16px] text-[#393280] hover:text-[#232323]"
           >
             📦 Order History
           </Link>
           <Link
             to="/profile/settings"
-            className="block text-[16px] text-[#393280] hover:text-[#232323]"
+            className="text-center block text-[16px] text-[#393280] hover:text-[#232323]"
           >
             ⚙️ Settings
           </Link>
+        </>
+      )}
+
+      {userRole === "admin" && (
+        <>
+          <Link
+            to="/profile/all-orders"
+            className="text-center block text-[16px] text-[#393280] hover:text-[#232323]"
+          >
+            📋 All Orders
+          </Link>
+          <Link
+            to="/profile/add-book"
+            className="text-center block text-[16px] text-[#393280] hover:text-[#232323]"
+          >
+            ➕ Add Book
+          </Link>
+        </>
+      )}
         </div>
       </div>
 
       {/* Logout Button */}
       <div className="mt-6">
         <button className="w-full text-white bg-red-500 py-2 rounded-md font-[500] hover:bg-red-600 transition-all">
-          🔓 Logout
+          Help
         </button>
       </div>
     </div>

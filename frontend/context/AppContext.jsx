@@ -80,6 +80,7 @@ export const AppContextProvider = (props) => {
     isLoggedin,
     setIsLoggedin,
     loadingUser,
+    userRole: userData?.role || null
   };
   return (
     <>

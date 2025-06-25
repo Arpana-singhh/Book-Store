@@ -15,3 +15,10 @@ export const PrivateRoute = ({ children }) => {
     return !isLoggedin ? children : <Navigate to="/" />;
   };
 
+  export const AdminRoute = ({ children }) => {
+    const { userRole, loadingUser } = useContext(AppContent);
+    if (loadingUser) return null;
+  
+    return userRole === "admin" ? children : <Navigate to="/profile" />;
+  };
+

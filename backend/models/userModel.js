@@ -55,6 +55,7 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Types.ObjectId,
             ref: 'book'
         }],
+
         // cart: [{
         // type: mongoose.Types.ObjectId,
         // ref: 'book'
@@ -66,10 +67,10 @@ const userSchema = new mongoose.Schema(
             },
             quantity: {
               type: Number,
-              default: 1,
-              min: 1
+              default: 1
             }
           }],
+          
           
         order: [{
         type: mongoose.Types.ObjectId,

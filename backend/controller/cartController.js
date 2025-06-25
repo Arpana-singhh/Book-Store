@@ -22,8 +22,12 @@ export const addBookToCart = async (req, res) => {
         });
       }
 
-      const isBookInCart = user.cart.includes(bookid);
-      // const isBookInCart = user.cart.some(item => item.book.toString() === bookid);
+      // const isBookInCart = user.cart.includes(bookid);
+      const isBookInCart = user.cart?.find(
+        item => item?.book?.toString() === bookid
+      );
+  
+  
 
       if (isBookInCart) {
         return res.status(409).json({
@@ -32,11 +36,11 @@ export const addBookToCart = async (req, res) => {
         });
       }
   
-      await userModel.findByIdAndUpdate(id, { $push: { cart: bookid } });
-      // await userModel.findByIdAndUpdate(id, {
-      //   $push: { cart: { book: bookid, quantity: 1 } }
-      // });
-      
+      // await userModel.findByIdAndUpdate(id, { $push: { cart: bookid } });
+      await userModel.findByIdAndUpdate(id, {
+        $push: { cart: { book: bookid, quantity: 1 } }
+      });
+  
   
       return res.status(200).json({
         success: true,
@@ -49,45 +53,47 @@ export const addBookToCart = async (req, res) => {
 
   // ====================== REMOVE BOOK FROM CART  ======================
 
-   export const removeBookFromCart = async (req, res) => {
-      try {
-        const { id, bookid } = req.headers;
+  export const removeBookFromCart = async (req, res) => {
+    try {
+      const { id, bookid } = req.headers;
   
-    
-        const user = await userModel.findById(id);
-        if (!user) {
-          return res.status(404).json({
-            success: false,
-            message: 'User not found',
-          });
-        }
-  
-        const book = await bookModel.findById(bookid);
-        if (!book) {
-          return res.status(404).json({
-            success: false,
-            message: 'Book not found',
-          });
-        }
-    
-        const isBookExist = user.cart.includes(bookid);
-        if (!isBookExist) {
-          return res.status(409).json({
-            success: false,
-            message: "Book is not in cart",
-          });
-        }
-    
-        await userModel.findByIdAndUpdate(id, { $pull: { cart: bookid } });
-    
-        return res.status(200).json({
-          success: true,
-          message: "Book removed from Cart",
+      const user = await userModel.findById(id);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
         });
-      } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
       }
-    };
+  
+      const book = await bookModel.findById(bookid);
+      if (!book) {
+        return res.status(404).json({
+          success: false,
+          message: 'Book not found',
+        });
+      }
+  
+      const isBookInCart = user.cart.find(item => item.book.toString() === bookid);
+      if (!isBookInCart) {
+        return res.status(409).json({
+          success: false,
+          message: "Book is not in cart",
+        });
+      }
+  
+      await userModel.findByIdAndUpdate(id, {
+        $pull: { cart: { book: bookid } }  
+      });
+  
+      return res.status(200).json({
+        success: true,
+        message: "Book removed from Cart",
+      });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  };
+  
   
   
     // ====================== GET BOOK ADDED TO THE CART BY PARTICULAR USER  ======================
@@ -95,7 +101,10 @@ export const addBookToCart = async (req, res) => {
       try{
           const {id} = req.headers;
   
-          const user = await userModel.findById(id).populate("cart")
+          const user = await userModel.findById(id).populate({
+            path: "cart.book",
+            model: "book"
+          });
           // const user = await userModel.findById(id).populate("cart.book");
 
           if(!user){
@@ -125,6 +134,7 @@ export const addBookToCart = async (req, res) => {
       const { id, bookid } = req.headers;
       const { quantity } = req.body;
   
+      // Validate user
       const user = await userModel.findById(id);
       if (!user) {
         return res.status(404).json({
@@ -141,19 +151,24 @@ export const addBookToCart = async (req, res) => {
         });
       }
   
-      // Update quantity in cart
-      const updatedUser = await userModel.findOneAndUpdate(
-        { _id: id, "cart.book": bookid },
-        { $set: { "cart.$.quantity": quantity } },
-        { new: true }
-      ).populate("cart.book");
+      // Find index of the book in cart
+      const cartItemIndex = user.cart.findIndex(
+        item => item.book.toString() === bookid
+      );
   
-      if (!updatedUser) {
+      if (cartItemIndex === -1) {
         return res.status(404).json({
           success: false,
           message: "Book not found in cart"
         });
       }
+  
+      // Update quantity
+      user.cart[cartItemIndex].quantity = quantity;
+      await user.save();
+  
+      // Populate and return updated cart
+      const updatedUser = await userModel.findById(id).populate("cart.book");
   
       return res.status(200).json({
         success: true,
@@ -169,4 +184,3 @@ export const addBookToCart = async (req, res) => {
     }
   };
   
- 

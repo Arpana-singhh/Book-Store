@@ -79,6 +79,35 @@
   border: 1px solid #ED553B !important;
 }
 
+.ant-select:hover .ant-select-selector{
+  border-color: #393280 !important;
+  box-shadow: none !important ;
+  outline:0 !important;
+}
+
+.ant-select-open{
+  border-color: #393280 !important;
+  box-shadow: none !important ;
+  outline:0 !important;
+}
+
+.ant-select-focused:where(.css-dev-only-do-not-override-1m63z2v).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector{
+  border-color: #393280 !important;
+  box-shadow: none !important ;
+  outline:0 !important;
+}
+
+:where(.css-dev-only-do-not-override-1m63z2v).ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  color: #ffffff;
+  font-weight: 600;
+  background-color: #393280;
+}
+
+.ant-select .ant-select-arrow{
+  color:#232323 !important;
+}
+
+
 
 @layer components {
   .cmn-org-btn{

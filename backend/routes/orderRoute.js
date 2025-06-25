@@ -6,7 +6,7 @@ const orderRoutes =express.Router();
 
 orderRoutes.post('/place-order',authenticateToken, placeOrder)
 orderRoutes.get('/get-order-history',authenticateToken, getOrderHistory)
-orderRoutes.post('/get-all-orders',authenticateToken, getAllOrders)
+orderRoutes.get('/get-all-orders',authenticateToken, getAllOrders)
 orderRoutes.post('/update-status/:id',authenticateToken, updateOrderStatus)
 
 export default orderRoutes;

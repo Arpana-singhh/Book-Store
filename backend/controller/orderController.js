@@ -3,41 +3,40 @@ import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
 
 //  ====================== PLACE ORDER  ======================
-export const placeOrder = async(req, res)=>{
-   try{
-    const {id} = req.headers;
-    const {order} = req.body;
-
-    for (const orderData of order){
-        const newOrder = new orderModel({user: id, book: orderData._id})
-        // const newOrder = new orderModel({
-        //     user: id,
-        //     book: orderData._id,
-        //     quantity: orderData.quantity ?? 1
-        //   });
-          
+export const placeOrder = async (req, res) => {
+    try {
+      const { id } = req.headers;
+      const { order } = req.body; // order = [{ _id: bookId, quantity: 2 }, ...]
+  
+      for (const orderItem of order) {
+        const newOrder = new orderModel({
+          user: id,
+          book: orderItem._id,
+          quantity: orderItem.quantity
+        });
+  
         const orderDataFromDb = await newOrder.save();
-        await userModel.findByIdAndUpdate(id, {$push:{order: orderDataFromDb._id}})
-   
-        await userModel.findByIdAndUpdate(id, {$pull:{cart : orderData._id}})
-        // await userModel.findByIdAndUpdate(id, {
-        //     $pull: { cart: { book: orderData._id } }
-        //   });
-          
-   
+  
+        // Push to user's order history
+        await userModel.findByIdAndUpdate(id, {
+          $push: { order: orderDataFromDb._id }
+        });
+  
+        // Remove this book from user's cart
+        await userModel.findByIdAndUpdate(id, {
+          $pull: { cart: { book: orderItem._id } }
+        });
+      }
+  
+      return res.json({
+        success: true,
+        message: "Order Placed Successfully"
+      });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
     }
-
-    return res.json({
-        success:true,
-        messsage:"Order Placed Successfully"
-    })
-
-   }
-   catch(error){
-    return res.status(500).json({ success: false, message: error.message });
-   }
-}
-
+  };
+  
 
 //  ====================== GET ORDER HISTORY OF PARTICULAR USER ======================
 
@@ -51,7 +50,8 @@ try{
      }
     })
 
-    const orderData = user.order.reverse();
+    // const orderData = user.order.reverse();
+    const orderData = [...user.order].reverse();
     return res.json({
         success:true,
         data:orderData
@@ -89,7 +89,7 @@ export const getAllOrders = async(req, res)=>{
 export const updateOrderStatus = async(req, res)=>{
     const {status} = req.body;
     try{
-       const {id} = req.params;
+       const {id} = req.headers;
        const user = await userModel.findById(id)
        if(!user){
         return res.status(404).json({
@@ -98,7 +98,7 @@ export const updateOrderStatus = async(req, res)=>{
         })
        }
 
-       if(user !== "admin"){
+       if (user.role !== "admin") {
         return res.status(404).json({
             success:false,
             message:"Admin Access Only. Access Denied"

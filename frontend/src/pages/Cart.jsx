@@ -20,6 +20,8 @@ const Cart = () => {
     });
     if (data.success) {
       setcartItems(data.data);
+      console.log(cartItems)
+      
     }
   };
 
@@ -36,7 +38,7 @@ const Cart = () => {
 
       if (data.success) {
         toast.success(data.message);
-        setcartItems(cartItems.filter((book) => book._id !== bookId));
+        setcartItems(cartItems.filter((book) => book.book._id !== bookId));
        
       } else {
         console.log("Error removing from favourites");
@@ -52,32 +54,9 @@ const Cart = () => {
   },[])
 
 
-    //  const handleIncrement = bookId => {
-    //   setcartItems(items =>
-    //     items.map(item =>
-        
-    //       item._id === bookId
-    //         ? { ...item, quantity: (item.quantity ?? 1) + 1 }
-    //         : item
-    //     )
-    //   );
-    // };
 
 
 
-    // const handleDecrement = bookId => {
-    //   setcartItems(items =>
-    //     items.map(item =>
-    //       item._id === bookId
-    //         ? { 
-    //             ...item, 
-    //             // never go below 1
-    //             quantity: Math.max(1, (item.quantity ?? 1) - 1) 
-    //           }
-    //         : item
-    //     )
-    //   );
-    // };
       const updateQuantityBackend = async (bookId, newQty) => {
         const headers = {
           authorization: `Bearer ${authToken}`,
@@ -92,32 +71,37 @@ const Cart = () => {
       };
       
       const handleIncrement = (bookId) => {
-        setcartItems(items =>
-          items.map(item =>
-            item._id === bookId
-              ? { ...item, quantity: (item.quantity ?? 1) + 1 }
-              : item
-          )
-        );
-        const newQty = cartItems.find(item => item._id === bookId)?.quantity ?? 1;
-        updateQuantityBackend(bookId, newQty + 1);
+        setcartItems(items => {
+          const updated = items.map(item => {
+            if (item.book._id === bookId) {
+              const newQty = (item.quantity ?? 1) + 1;
+              updateQuantityBackend(bookId, newQty);
+              return { ...item, quantity: newQty };
+            }
+            return item;
+          });
+          return updated;
+        });
       };
+      
       
       const handleDecrement = (bookId) => {
-        const currentQty = cartItems.find(item => item._id === bookId)?.quantity ?? 1;
-        const newQty = Math.max(1, currentQty - 1);
-        setcartItems(items =>
-          items.map(item =>
-            item._id === bookId
-              ? { ...item, quantity: newQty }
-              : item
-          )
-        );
-        updateQuantityBackend(bookId, newQty);
+        setcartItems(items => {
+          const updated = items.map(item => {
+            if (item.book._id === bookId) {
+              const newQty = Math.max(1, (item.quantity ?? 1) - 1);
+              updateQuantityBackend(bookId, newQty); 
+              return { ...item, quantity: newQty };
+            }
+            return item;
+          });
+          return updated;
+        });
       };
       
+      
     const subtotal = cartItems.reduce(
-      (acc, item) => acc + item.price * (item.quantity ?? 1),
+      (acc, item) => acc + item.book.price * (item.quantity ?? 1),
       0
     );
     const discountPercent = subtotal >= 300 ? 10 : 5;
@@ -140,26 +124,26 @@ const Cart = () => {
         <div className="max-w-[870px] w-full flex flex-col gap-5">
           {cartItems.map((item) => (
             <div
-              key={item._id}
+              key={item.book._id}
               className="flex flex-col md:flex-row items-center border rounded-[12px] p-4 shadow-md"
             >
               <img
-                src={item.url}
+                src={item.book.url}
                 alt={item.title}
                 className="w-[120px] h-[160px] object-cover rounded-md mb-4 md:mb-0"
               />
               <div className="md:ml-6 flex flex-col flex-grow">
-                <h2 className="text-[20px] font-[600] text-[#393280]">{item.title}</h2>
-                <p className="text-[#555] text-[16px] mb-2">by {item.author}</p>
-                <p className="text-[#393280] font-[500] text-[18px] mb-2">₹{item.price}</p>
+                <h2 className="text-[20px] font-[600] text-[#393280]">{item.book.title}</h2>
+                <p className="text-[#555] text-[16px] mb-2">by {item.book.author}</p>
+                <p className="text-[#393280] font-[500] text-[18px] mb-2">₹{item.book.price}</p>
 
                 <div className="flex items-center space-x-4 mt-auto">
                   <div className="flex items-center border rounded-[6px] overflow-hidden">
-                    <button onClick={() => handleDecrement(item._id)} className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> – </button>
-                    <span className="px-4">{item.quantity ?? 1}</span>
-                    <button onClick={() => handleIncrement(item._id)}className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> + </button>
+                    <button onClick={() => handleDecrement(item.book._id)} className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> – </button>
+                    <span className="px-4">{item.quantity}</span>
+                    <button onClick={() => handleIncrement(item.book._id)}className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> + </button>
                  </div>
-                  <button className="cmn-org-btn" onClick={() => handleRemoveFromCart(item._id)}>Remove</button>
+                  <button className="cmn-org-btn" onClick={() => handleRemoveFromCart(item.book._id)}>Remove</button>
                 </div>
               </div>
             </div>
