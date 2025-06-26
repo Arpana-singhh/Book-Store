@@ -24,6 +24,12 @@ const Category = () => {
         settings: {
           slidesToShow: 2
         }
+      },
+      {
+        breakpoint: 375,
+        settings: {
+          slidesToShow: 1
+        }
       }
     ]
   }
@@ -38,9 +44,9 @@ const Category = () => {
   ]
 
   return (
-    <div className="py-[92px] layout-fixer">
-      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">Genre</h4>
-      <h1 className="font-[700] text-[32px] text-[#393280] mb-10">Explore our Genre</h1>
+    <div className="pt-[50px] pb-[70px] sm:pt-[60px] sm:pb-[80px] md:py-[92px] layout-fixer overflow-hidden">
+      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px] text-center lg:text-left">Genre</h4>
+      <h1 className="font-[700] text-[22px] sm:text-[28px]  md:text-[32px] text-[#393280] mb-6 sm:mb-8 md:mb-10 text-center lg:text-left">Explore our Genre</h1>
 
 
       <Slider {...settings} className="category-slider cmn-slider-dot">

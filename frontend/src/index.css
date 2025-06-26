@@ -110,6 +110,20 @@
 td{
   font-size:14px;
 }
+h1, h2, h3,h4,h5,h6{
+  margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .hero-slider .slick-dots {
+    bottom: -82px !important;
+    left: 50% !important;
+    gap: 5px !important;
+    transform: translateX(-50px);
+}
+}
+
+
 
 @layer components {
   .cmn-org-btn{
@@ -119,6 +133,6 @@ td{
     @apply bg-primary text-white px-6 py-3 rounded-xl hover:bg-secondary transition-all duration-300
   }
   .layout-fixer{
-    @apply px-[100px];
+    @apply px-[10px] sm:px-[20px] lg:px-[60px] md:px-[40px] xl:px-[100px] 
   }
 }

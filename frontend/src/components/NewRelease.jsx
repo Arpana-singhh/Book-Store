@@ -20,25 +20,25 @@ const NewRelease = () => {
 
   return (
     <div className="pt-[0] pb-[92px] layout-fixer">
-      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px]">
+      <h4 className="font-[700] text-[14px] text-[#ED553B] mb-[12px] text-center lg:text-left">
         New Release
       </h4>
-       <div className="flex justify-between items-center mb-10">
-      <h1 className="font-[700] text-[32px] text-[#393280]">Explore our New Release</h1>
-            <Link to="/books" className="text-[#393280] font-[400] text-[16px] px-[34px] pt-[12px] pb-[14px] mt-10 border border-[#393280] rounded-[7px] w-fit hover:bg-[#393280] hover:text-white transition-all duration-300">
+       <div className="flex justify-center sm:justify-between items-center mb-10 flex-col sm:flex-row gap-[20px] sm:gap-0">
+      <h1 className="mb-0 font-[700] text-[22px] sm:text-[28px]  md:text-[32px] text-[#393280] text-center lg:text-left">Explore our New Release</h1>
+            <Link to="/books" className="text-[#393280] font-[400] text-[16px] px-[34px] pt-[12px] pb-[14px]  border border-[#393280] rounded-[7px] w-fit hover:bg-[#393280] hover:text-white transition-all duration-300">
             View More
             </Link>
       </div>
-      <div className="flex flex-wrap gap-[34px]">
+      <div className="flex flex-wrap gap-[20px] xl:gap-[24px]">
         {recentData &&
           recentData.map((item, index) => (
             <Link
               to={`/book-detail/${item._id}`}
               key={index}
-              className="w-[calc(100%/4-(3*34px)/4)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px]  rounded-[10px] border border-transparent hover:border-[#393280] transition-all duration-300
+              className="w-full sm:w-[calc(100%/2-(1*20px)/2)] md:w-[calc(100%/3-(2*20px)/3)] xl:w-[calc(100%/4-(3*24px)/4)] flex flex-col justify-center items-center shadow-[1.03px_4.12px_15px_0px_#8282822e] p-[20px]  rounded-[10px] border border-transparent hover:border-[#393280] transition-all duration-300
 "
             >
-              <div className="w-[200px] h-[240px]">
+              <div className="w-[200px] h-[240px] sm:w-[240px] lg:w-[242px] lg:h-[262px]  xl:w-[200px] xl:h-[240px]">
                 <img
                   src={item.url}
                   alt={item.title}

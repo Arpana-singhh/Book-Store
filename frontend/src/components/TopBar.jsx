@@ -4,10 +4,10 @@ import React from 'react'
 const TopBar = () => {
   return (
     <div className="bg-[#393280] w-full layout-fixer py-[18px] text-white">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-center sm:justify-between items-center flex-col sm:flex-row gap-[10px]  sm:gap-0">
         <div>
       
-          <a href="tel:+918374902234" className="flex items-center gap-[5px]">
+          <a href="tel:+918374902234" className="flex items-center gap-[5px] sm:text-[16px] text-[14px]">
             <i className="fa-solid fa-phone"></i>
             +91 8374902234
           </a>

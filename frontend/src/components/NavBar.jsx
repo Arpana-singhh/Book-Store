@@ -40,16 +40,16 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="layout-fixer py-[15px] z-[2] sticky w-full top-0 bg-white">
-        <div className="flex justify-between items-center">
+      <div className="layout-fixer py-[5px] z-[2] sticky w-full top-0 bg-white">
+        <div className="flex justify-center sm:justify-between items-center flex-wrap gap-[20px] sm:gap-0">
           <Link to="/" className="h-[55px] w-[55px]">
             <img src={assets.Logo} alt="Leaf&Ink" />
           </Link>
 
-          <div className="flex items-center gap-[10px]">
+          <div className="flex items-center gap-[5px] md:gap-[10px]">
             <Link
               to="/"
-              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
+              className={`text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
               ${activeLink === "/" ? "text-[#ED553B]" : ""}`}
               onClick={() => handleLinkClick("/")}
             >
@@ -58,7 +58,7 @@ const NavBar = () => {
 
             <Link
               to="/books"
-              className={`text-[18px] font-[700] text-[#232323] px-[20px]transition duration-300 ease-in-out hover:text-[#ED553B] 
+              className={`text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
               ${activeLink === "/books" ? "text-[#ED553B]" : ""}`}
               onClick={() => handleLinkClick("/books")}
             >
@@ -68,7 +68,7 @@ const NavBar = () => {
               <>
               <Link
                 to="/cart"
-                className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
+                className={`text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B] 
                 ${activeLink === "/cart" ? "text-[#ED553B]" : ""}`}
                 onClick={() => handleLinkClick("/cart")}
               >
@@ -77,7 +77,7 @@ const NavBar = () => {
 
               <Link
               to="/profile"
-              className={`text-[18px] font-[700] text-[#232323] px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
+              className={`text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out  hover:text-[#ED553B]
               ${activeLink === "/profile" ? "text-[#ED553B]" : ""}`}
               onClick={() => handleLinkClick("/profile")}
               >
@@ -93,7 +93,7 @@ const NavBar = () => {
           {!isLoggedin ? (
               <Link
                 to="/login"
-                className={`text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]
+                className={`text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]
             ${activeLink === "/login" ? "text-[#ED553B]" : ""}`}
                 onClick={() => handleLinkClick("/login")}
               >
@@ -102,7 +102,7 @@ const NavBar = () => {
             ) : (
               <button
                 onClick={() => setIsLogoutModalVisible(true)}
-                className="text-[18px] font-[700] text-[#232323] pl-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]"
+                className="text-[14px] sm:text-[16px] md:text-[18px] font-[700] text-[#232323] px-[5px] sm:px-[15px] md:px-[20px] transition duration-300 ease-in-out hover:text-[#ED553B]"
               >
                 Logout
               </button>
