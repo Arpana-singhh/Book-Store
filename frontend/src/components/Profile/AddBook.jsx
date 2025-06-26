@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { AppContent } from '../../../context/AppContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-const AddBookForm = ({ onSubmit }) => {
+const AddBookForm = () => {
+  const { backendUrl } = useContext(AppContent);
+  const navigate = useNavigate();
   const initialValues = {
     url: '',
     title: '',
@@ -11,6 +17,9 @@ const AddBookForm = ({ onSubmit }) => {
     desc: '',
     language: '',
   };
+
+  const token = localStorage.getItem("authToken");
+  const userId = localStorage.getItem("userId");
 
   const validationSchema = Yup.object({
     url: Yup.string().url('Invalid URL').required('Image URL is required'),
@@ -21,6 +30,33 @@ const AddBookForm = ({ onSubmit }) => {
     language: Yup.string().required('Language is required'),
   });
 
+  const addBook = async(values, actions)=>{
+    try{
+     const {data}= await axios.post(backendUrl + 'api/auth/add-book',  {
+        url:values.url,
+        title:values.title,
+        author:values.author,
+        price:values.price, 
+        desc:values.desc,
+        language:values.language
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          id: userId
+        }
+      })
+        if(data.success){
+          toast.success(data.message);
+          actions.resetForm();
+          navigate('/books')
+        }
+      } catch (error) {
+          toast.error(error.response?.data?.message || error.message || "Error in adding address");
+        } 
+  }
+
+
   return (
     <div className="pt-0 pb-[92px] px-[20px]">
       <h1 className="text-[32px] font-bold text-[#393280] mb-6">
@@ -30,10 +66,7 @@ const AddBookForm = ({ onSubmit }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, actions) => {
-          onSubmit(values);
-          actions.resetForm();
-        }}
+        onSubmit={addBook}
       >
         {() => (
           <Form className="bg-white rounded-xl shadow-md p-6 space-y-5 border border-gray-200">

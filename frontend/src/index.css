@@ -107,7 +107,9 @@
   color:#232323 !important;
 }
 
-
+td{
+  font-size:14px;
+}
 
 @layer components {
   .cmn-org-btn{

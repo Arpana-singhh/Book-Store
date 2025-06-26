@@ -13,7 +13,7 @@ const Settings = () => {
   const updateAddress = async (values, { setSubmitting }) => {
     const token = localStorage.getItem("authToken");
     const userId = localStorage.getItem("userId");
-    console.log('values',values)
+    
     try {
       const { data } = await axios.put(
         backendUrl + "api/auth/update-address",
@@ -28,7 +28,7 @@ const Settings = () => {
 
       if (data.success) {
         toast.success("Address updated successfully");
-        await getUserData(); // Refresh user data
+        await getUserData();
       } else {
         toast.error(data.message || "Failed to update address");
       }

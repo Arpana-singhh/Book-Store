@@ -85,7 +85,7 @@ const Favourites = () => {
                   <div className="flex justify-center items-center">
                   <button
                       onClick={() => handleRemoveFromFavourite(item._id)}
-                      className="mt-2 cmn-org-btn"
+                      className="mt-2 cmn-org-btn px-4 py-2  text-[14px] cmn-org-btn"
                     >
                       Remove from Favourite
                     </button>

@@ -17,6 +17,7 @@ import Settings from "../components/Profile/Settings";
 import AllOrder from "../components/Profile/AllOrder";
 import AddBook from "../components/Profile/AddBook";
 import { AppContent } from "../../context/AppContext";
+import UpdateBook from "../pages/UpdateBook";
 
 
 const AppRoutes = () => {
@@ -43,7 +44,7 @@ const AppRoutes = () => {
 
           {/* Sub-routes */}
           <Route path="favourites" element={<Favourites />} />
-          <Route path="orders" element={<OrderHistory />} />
+          <Route path="order-history" element={<OrderHistory />} />
           <Route path="settings" element={<Settings />} />
           <Route path="all-orders" element={
             <AdminRoute>
@@ -67,6 +68,14 @@ const AppRoutes = () => {
               </PrivateRoute>
             }
           />
+
+          <Route path="/update-book/:id" 
+              element={
+                <AdminRoute>
+                  <UpdateBook/>
+                </AdminRoute>
+              }
+          />            
 
           {/* ✅ Public only routes */}
           <Route

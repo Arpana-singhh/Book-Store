@@ -8,7 +8,7 @@ const Profile = () => {
       useContext(AppContent);
   return (
     <div className=" bg-gray-100 py-10 px-4 flex ">
-       <div className="w-[30%]">
+       <div className="w-[30%] min-h-[calc(100vh-60px-85px-24px-24px)]">
         <ProfileSidebar/>
       </div>
       <div className="flex-1 px-4 max-h-[calc(100vh-60px-85px-24px-24px)] overflow-auto">

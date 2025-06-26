@@ -143,7 +143,7 @@ const Cart = () => {
                     <span className="px-4">{item.quantity}</span>
                     <button onClick={() => handleIncrement(item.book._id)}className="px-3 py-1 bg-[#f2f2f2] hover:bg-[#ddd]"> + </button>
                  </div>
-                  <button className="cmn-org-btn" onClick={() => handleRemoveFromCart(item.book._id)}>Remove</button>
+                  <button className="cmn-blue-btn px-4 py-2 text-[14px] rounded-md" onClick={() => handleRemoveFromCart(item.book._id)}>Remove</button>
                 </div>
               </div>
             </div>

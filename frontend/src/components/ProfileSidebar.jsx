@@ -6,7 +6,7 @@ const ProfileSidebar = () => {
   const { userData, userRole } = useContext(AppContent);
  
   return (
-    <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col justify-between max-h-[calc(100vh-60px-85px-24px-24px)] min-h-[calc(100vh-60px-85px-24px-24px)]">
+    <div className="bg-white rounded-lg p-6 shadow-md h-full flex flex-col justify-between">
       {/* Top Section */}
       <div className="">
         {/* Avatar */}

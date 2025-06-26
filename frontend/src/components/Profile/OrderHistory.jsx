@@ -67,7 +67,7 @@ const OrderHistory = () => {
             <td className="text-center p-2">{item.book?.title || 'NA'}</td>
             <td className="text-center p-2">{item.quantity}</td>
             <td className="text-center p-2">{item.book?.price || 'NA'}</td>
-            <td className={`font-semibold text-center p-2 ${getStatusClasses('Order Placed')}`}>{item.status}</td>
+            <td className={`font-semibold text-center p-2 ${getStatusClasses(item.status)}`}>{item.status}</td>
             <td className="text-center p-2">COD</td>
            </tr>
            ))}

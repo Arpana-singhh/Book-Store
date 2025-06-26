@@ -86,33 +86,28 @@ export const getAllOrders = async(req, res)=>{
 
 
 //  ====================== UPDATE ORDER STATUS ======================
-export const updateOrderStatus = async(req, res)=>{
-    const {status} = req.body;
-    try{
-       const {id} = req.headers;
-       const user = await userModel.findById(id)
-       if(!user){
-        return res.status(404).json({
-            success:false,
-            message:"User Not Found"
-        })
-       }
+export const updateOrderStatus = async (req, res) => {
+  const { status } = req.body;
 
-       if (user.role !== "admin") {
-        return res.status(404).json({
-            success:false,
-            message:"Admin Access Only. Access Denied"
-        })
-       }
+  try {
+    const orderId = req.params.id;
+    const userId = req.headers.id; // headers are lowercase
 
-        await orderModel.findByIdAndUpdate(id, {status:status})
-        return res.json({
-            success:true,
-            message:'Status updated successfully'
-
-        })
-    } 
-    catch(error){
-        return res.status(500).json({ success: false, message: error.message });
+    const user = await userModel.findById(userId);
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Admin Access Only. Access Denied",
+      });
     }
-}
+
+    await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
+
+    return res.json({
+      success: true,
+      message: "Status updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};

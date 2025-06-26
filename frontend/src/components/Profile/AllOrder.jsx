@@ -5,6 +5,7 @@ import { Modal, Button } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design v5
 import { EyeOutlined, UserOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
+import { toast } from 'react-toastify';
 
 
 const AllOrder = () => {
@@ -14,8 +15,9 @@ const AllOrder = () => {
     const [isBookModalVisible, setIsBookModalVisible] = useState(false);
     const { backendUrl } = useContext(AppContent);
     let authToken = localStorage.getItem("authToken");
+    let userId = localStorage.getItem("userId");
   
-    const getallOrder = async () => {
+    const getallOrder = async() => {
       const headers = {
         authorization: `Bearer ${authToken}`
       };
@@ -33,31 +35,27 @@ const AllOrder = () => {
     },[])
 
     const updateOrderStatus = async (orderId, newStatus) => {
-      console.log("Test")
-      // try {
-      //   const userId = localStorage.getItem("userId");
+   
+      try {
+        const { data } = await axios.post(
+          `${backendUrl}api/auth/update-status/${orderId}`,
+          { status: newStatus },
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              id: userId, 
+            },
+          }
+        );
     
-      //   const { data } = await axios.post(
-      //     `${backendUrl}api/auth/update-status/${orderId}`,
-      //     { status: newStatus },
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${authToken}`,
-      //         id: userId, // Admin check on server
-      //       },
-      //     }
-      //   );
-    
-      //   if (data.success) {
-      //     setallOrder((prevOrders) =>
-      //       prevOrders.map((order) =>
-      //         order._id === orderId ? { ...order, status: newStatus } : order
-      //       )
-      //     );
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      // }
+        if (data.success) {
+          toast.success(data.message);
+          await getallOrder();
+        }
+      } catch (error) {
+          const message = error.response?.data?.message || "Something went wrong";
+          toast.error(message);
+      }
     };
     
 
@@ -111,6 +109,7 @@ const AllOrder = () => {
                     value={item.status}
                     className="w-[160px]"
                     onChange={(value) => updateOrderStatus(item._id, value)}
+                  
                     options={[
                       { label: 'Order Placed', value: 'Order Placed' },
                       { label: 'Out for Delivery', value: 'Out for Delivery' },

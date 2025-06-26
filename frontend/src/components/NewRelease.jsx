@@ -25,9 +25,9 @@ const NewRelease = () => {
       </h4>
        <div className="flex justify-between items-center mb-10">
       <h1 className="font-[700] text-[32px] text-[#393280]">Explore our New Release</h1>
-            <button className="text-[#393280] font-[400] text-[16px] px-[34px] pt-[12px] pb-[14px] mt-10 border border-[#393280] rounded-[7px] w-fit hover:bg-[#393280] hover:text-white transition-all duration-300">
+            <Link to="/books" className="text-[#393280] font-[400] text-[16px] px-[34px] pt-[12px] pb-[14px] mt-10 border border-[#393280] rounded-[7px] w-fit hover:bg-[#393280] hover:text-white transition-all duration-300">
             View More
-            </button>
+            </Link>
       </div>
       <div className="flex flex-wrap gap-[34px]">
         {recentData &&
@@ -54,7 +54,7 @@ const NewRelease = () => {
                 </p>
                 <p className="text-center">{item.price}</p>
                 <div className="flex justify-center items-center">
-                  <button className="mt-2 cmn-org-btn">
+                  <button className="mt-2 cmn-org-btn px-4 py-2  text-[14px] cmn-org-btn">
                     Read More
                   </button>
                 </div>
